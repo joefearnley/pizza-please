@@ -3,4 +3,6 @@ Pizza Please
 
 Wanna see some pizza? Look no further:
 
-[http://joefearnley.com/pizza-please/](http://joefearnley.com/pizza-please/)
+<a href="http://joefearnley.com/pizza-please/" target="_blank">
+	http://joefearnley.com/pizza-please/
+</a>
