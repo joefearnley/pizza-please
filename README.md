@@ -1,4 +1,4 @@
-pizza-please
+Pizza Please
 ============
 
 Wanna see some pizza? Look no further:
