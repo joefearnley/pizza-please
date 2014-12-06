@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Pizza Please</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pizza Please</title>
 </head>
 <body>
 <div id="stream">
@@ -13,20 +13,21 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-instagram/0.3.1/instagram.js"></script>
 <script>
 $(function() {
-	$('#stream').on('didLoadInstagram', function(event, response) {
-		var count = response.data.length;
-		for (var i = 0; i < count; i++) {
-			var caption = response.data[i].caption.text;
-			var image = response.data[i].images.low_resolution;
-			var link = response.data[i].link;
-			$(this).append('<a href="'+response.data[i].link+'" targer="_blank">' +
-							'<img src="' + image.url + '" title="'+caption+'"></a>');
-		}
-	});
-	$('#stream').instagram({
-		hash: 'pizza',
-		clientId: '7896038144a843829b9826f88ec7628b'
-	});
+    $('#stream').on('didLoadInstagram', function(event, response) {
+        var count = response.data.length;
+        for (var i = 0; i < count; i++) {
+            var caption = response.data[i].caption.text;
+            var image = response.data[i].images.low_resolution;
+            var link = response.data[i].link;
+            $(this).append('<a href="'+response.data[i].link+'" targer="_blank">' +
+                            '<img src="' + image.url + '" title="'+caption+'"></a>');
+            }
+    });
+
+    $('#stream').instagram({
+        hash: 'pizza',
+        clientId: '7896038144a843829b9826f88ec7628b'
+    });
 });
 </script>
 </body>
