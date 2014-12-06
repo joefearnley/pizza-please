@@ -1,4 +1,6 @@
 pizza-please
 ============
 
-Who wants to look at some pizza?
+Wanna see some pizza? Look no further:
+
+[http://joefearnley.com/pizza-please/](http://joefearnley.com/pizza-please/)
