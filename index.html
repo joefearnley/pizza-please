@@ -7,27 +7,22 @@
     <title>Pizza Please</title>
 </head>
 <body>
-<div id="stream">
-</div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-instagram/0.3.1/instagram.js"></script>
+    <div id="stream">
+    </div>
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/instafeed.min.js"></script>
 <script>
-$(function() {
-    $('#stream').on('didLoadInstagram', function(event, response) {
-        var count = response.data.length;
-        for (var i = 0; i < count; i++) {
-            var caption = response.data[i].caption.text;
-            var image = response.data[i].images.low_resolution;
-            var link = response.data[i].link;
-            $(this).append('<a href="'+response.data[i].link+'" targer="_blank">' +
-                            '<img src="' + image.url + '" title="'+caption+'"></a>');
-            }
+$(function() {    
+    var template = '<a href="{{link}}" targer="_blank"><img src="{{image}}" title="{{caption}}"></a>';
+    var feed = new Instafeed({
+        get: 'tagged',
+        tagName: 'pizza',
+        clientId: '7896038144a843829b9826f88ec7628b',
+        target: 'stream',
+        template: template,
+        limit: 55
     });
-
-    $('#stream').instagram({
-        hash: 'pizza',
-        clientId: '7896038144a843829b9826f88ec7628b'
-    });
+    feed.run();
 });
 </script>
 </body>
