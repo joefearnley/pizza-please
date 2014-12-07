@@ -9,10 +9,10 @@
 <body>
     <div id="photos">
     </div>
-<script src="js/jquery-2.1.1.js"></script>
+    <div id="loading" style="height: 100px; margin:auto; text-align: center;">
+    </div>
 <script src="js/instafeed.min.js"></script>
 <script>
-$(function() {    
     var feed = new Instafeed({
         get: 'tagged',
         tagName: 'pizza',
@@ -26,9 +26,9 @@ $(function() {
     var resizeTimeout;
     window.addEventListener('scroll', function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if(document.getElementById('loading') == null) {
-                var loadingHtml = '<img src="img/loading.gif" id="loading" height="75" width="75">';
-                document.getElementById('photos').innerHTML += loadingHtml;
+            if(document.getElementById('loading').innerHTML != null) {
+                var loadingHtml = '<img src="img/loading.gif" height="50" width="50">';
+                document.getElementById('loading').innerHTML = loadingHtml;
             }
 
             if (resizeTimeout) {
@@ -39,12 +39,10 @@ $(function() {
                 if (feed.hasNext()) {
                     feed.next();
                 }
-                var loading = document.getElementById("loading");
-                loading.parentNode.removeChild(loading);
+                document.getElementById('loading').innerHTML = null;
             }, 300);
         }
     });
-});
 </script>
 </body>
 </html>
