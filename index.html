@@ -7,22 +7,43 @@
     <title>Pizza Please</title>
 </head>
 <body>
-    <div id="stream">
+    <div id="photos">
     </div>
 <script src="js/jquery-2.1.1.js"></script>
 <script src="js/instafeed.min.js"></script>
 <script>
 $(function() {    
-    var template = '<a href="{{link}}" targer="_blank"><img src="{{image}}" title="{{caption}}"></a>';
     var feed = new Instafeed({
         get: 'tagged',
         tagName: 'pizza',
         clientId: '7896038144a843829b9826f88ec7628b',
-        target: 'stream',
-        template: template,
-        limit: 55
+        target: 'photos',
+        template: '<a href="{{link}}" target="_blank"><img src="{{image}}" title="{{caption}}"></a>',
+        limit: 60
     });
     feed.run();
+
+    var resizeTimeout;
+    window.addEventListener('scroll', function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            if(document.getElementById('loading') == null) {
+                var loadingHtml = '<span style="margin-left: auto; margin-right: auto"><img src="img/loading.gif" id="loading" height="75" width="75"></span>'
+                document.getElementById('photos').innerHTML += loadingHtml;
+            }
+
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
+            }
+
+            resizeTimeout = setTimeout(function() {
+                if (feed.hasNext()) {
+                    feed.next();
+                }
+                var loading = document.getElementById("loading");
+                loading.parentNode.removeChild(loading);
+            }, 300);
+        }
+    });
 });
 </script>
 </body>
