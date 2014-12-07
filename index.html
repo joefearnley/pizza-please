@@ -27,7 +27,7 @@ $(function() {
     window.addEventListener('scroll', function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if(document.getElementById('loading') == null) {
-                var loadingHtml = '<span style="margin-left: auto; margin-right: auto"><img src="img/loading.gif" id="loading" height="75" width="75"></span>'
+                var loadingHtml = '<img src="img/loading.gif" id="loading" height="75" width="75">';
                 document.getElementById('photos').innerHTML += loadingHtml;
             }
 
