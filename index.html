@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizza Please</title>
+    <style type="text/css">
+        .photo {
+            width: 25%;
+        }
+    </style>
 </head>
 <body>
     <div id="photos">
@@ -18,7 +23,7 @@
         tagName: 'pizza',
         clientId: '7896038144a843829b9826f88ec7628b',
         target: 'photos',
-        template: '<a href="{{link}}" target="_blank"><img src="{{image}}" title="{{caption}}"></a>',
+        template: '<a href="{{link}}" target="_blank"><img class="photo" src="{{image}}" title="{{caption}}"></a>',
         limit: 60
     });
     feed.run();
@@ -27,7 +32,7 @@
     window.addEventListener('scroll', function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if(document.getElementById('loading').innerHTML != null) {
-                var loadingHtml = '<img src="img/loading.gif" height="50" width="50">';
+                var loadingHtml = '<img src="img/loading.gif">';
                 document.getElementById('loading').innerHTML = loadingHtml;
             }
 
