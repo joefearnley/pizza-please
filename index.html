@@ -11,19 +11,20 @@
 </head>
 <body>
 <div class="container" ng-controller="SearchCityController">
-    <form class="form-search">
+    <form ng-submit="findPizza()" class="form-search">
         <h2 class="form-search-heading">Find Pizza</h2>
-        <input type="text" class="form-control" placeholder="Search for an airplane" ng-model="selectedAirplane" typeahead="airplane as airplane.registration for airplane in airplanes | filter:$viewValue | limitTo:3">
+        <input type="text" class="form-control" placeholder="Enter City" ng-model="chosenPlace" details="chosenPlaceDetails" googleplace/>
         <div class="text-center">
             <button class="btn btn-lg btn-success btn-block" type="submit">Go</button>
         </div>
     </form>
+    <div class="results">
+    </div>
 </div>
 
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-
+<script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script src="js/app.js"></script>
+
 </body>
 </html>
