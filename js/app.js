@@ -14,29 +14,31 @@
 		$scope.title = 'Find Pizza';
 
 		$scope.findPizza = function() {
-			var address = $scope.city.split(',').join('').split(' ').join('+');;
+			var city = $scope.city.split(',').join('').split(' ').join('+');
 
-			https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=- + address + '&radius=500&types=food&name=pizza&key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs
+		// 	$http.get('http://localhost:3000?city=' + city).success(function(response) {
+		// 		console.log(response);
+		// 	});
 
-
-			$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCG6qB4A5qd7wy4N2OwHDIA1HvIxD_QLVw')
-			.success(function(response) {
-				var lat = response.results[0].geometry.location.lat;
-				var lng = response.results[0].geometry.location.lng;
-
-				$http({
-					method: 'JSONP',
-					url: 'https://maps.googleapis.com/maps/api/place/textsearch/xml?query=pizza+in+' + $scope.city + '&key=AIzaSyDAIP3blcmp_GmTunYObhYLuhuw6DXovic'
-					//url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + address + '&radius=500&types=food&name=pizza&key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs'
-				}).then(function(response) {
-					console.log(response);
-				});
-
-				// $http.get()
-				// 	.success(function(response) {
-				// 		console.log(response);
-				// 	});
+			$http({
+				url: 'http://localhost:3000?city=' + city
+			}).then(function(response) {
+				console.log(response);
 			});
+
+			// $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCG6qB4A5qd7wy4N2OwHDIA1HvIxD_QLVw')
+			// .success(function(response) {
+			// 	var lat = response.results[0].geometry.location.lat;
+			// 	var lng = response.results[0].geometry.location.lng;
+			//
+			// 	$http({
+			// 		method: 'JSONP',
+			// 		url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=pizza+in+' + $scope.city + '&key=AIzaSyDAIP3blcmp_GmTunYObhYLuhuw6DXovic'
+			// 		//url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + address + '&radius=500&types=food&name=pizza&key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs'
+			// 	}).then(function(response) {
+			// 		console.log(response.results);
+			// 	});
+			//});
 		}
 	});
 
