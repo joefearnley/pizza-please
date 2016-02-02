@@ -2,37 +2,43 @@
 var express = require('express');
 var app = express();
 var request = require('request');
+var config = require('config');
+var Yelp = require('yelp');
 
-
+var yelp = new Yelp({
+	consumer_key: config.get('Yelp.consumerKey'),
+	consumer_secret: config.get('Yelp.consumerSecret'),
+	token: config.get('Yelp.token'),
+	token_secret: config.get('Yelp.tokenSecret'),
+});
 
 app.get('/', function (req, res) {
 
-	//console.log(req.params);
+	res.header("Access-Control-Allow-Origin", "*");
 
-	var city = req.param('city');
+	var city = req.query.city;
 	var results = {
 		success: true,
 		error: null,
 		data: []
 	};
 
-	//request('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=AIzaSyDAIP3blcmp_GmTunYObhYLuhuw6DXovic',
-	request('https://maps.googleapis.com/maps/api/place/textsearch/json?query=pizza+in+' + city + ' &key=AIzaSyDAIP3blcmp_GmTunYObhYLuhuw6DXovic',
-		function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				var resultsFromGoogle = JSON.parse(response.body).results;
+	yelp.search({ term: 'pizza', location: city }).then(function (response) {
+		var businesses = response.businesses;
 
-				for (var i = 0; i < resultsFromGoogle.length; i++) {
-					results.data.push(resultsFromGoogle[i].name);
-				}
+		for (var i = 0; i < businesses.length; i++) {
+			results.data.push({
+				name: businesses[i].name,
+				coordinates: businesses[i].location.coordinate
+			});
+		}
 
-				res.send(results);
-			} else {
-				results.success = false;
-				results.error = error;
-				res.send(results);
-			}
-		});
+		res.send(results);
+	}).catch(function (err) {
+		results.success = true,
+		results.error = error;
+		res.send(results);
+	});
 });
 
 app.listen(3000, function () {

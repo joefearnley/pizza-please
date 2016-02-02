@@ -3,42 +3,29 @@
 (function() {
 	var app = angular.module('pizzaPlease', ['ngGPlaces']);
 
-	app.config(function(ngGPlacesAPIProvider) {
-		ngGPlacesAPIProvider.setDefaults({
-			types: ['food']
-		});
-	});
-
 	app.controller('SearchCityController', function($scope, $http, ngGPlacesAPI) {
 
 		$scope.title = 'Find Pizza';
 
 		$scope.findPizza = function() {
-			var city = $scope.city.split(',').join('').split(' ').join('+');
+			var address = $scope.city.split(',').join('').split(' ').join('+');
 
-		// 	$http.get('http://localhost:3000?city=' + city).success(function(response) {
-		// 		console.log(response);
-		// 	});
-
-			$http({
-				url: 'http://localhost:3000?city=' + city
-			}).then(function(response) {
+			$http.get('http://localhost:3000?city=' + $scope.city).success(function(response) {
 				console.log(response);
 			});
 
 			// $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCG6qB4A5qd7wy4N2OwHDIA1HvIxD_QLVw')
-			// .success(function(response) {
-			// 	var lat = response.results[0].geometry.location.lat;
-			// 	var lng = response.results[0].geometry.location.lng;
+			// 	.success(function(response) {
+			// 		var lat = response.results[0].geometry.location.lat;
+			// 		var lng = response.results[0].geometry.location.lng;
+			// 		var query = 'pizza' + $scope.city;
 			//
-			// 	$http({
-			// 		method: 'JSONP',
-			// 		url: 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=pizza+in+' + $scope.city + '&key=AIzaSyDAIP3blcmp_GmTunYObhYLuhuw6DXovic'
-			// 		//url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=' + address + '&radius=500&types=food&name=pizza&key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs'
-			// 	}).then(function(response) {
-			// 		console.log(response.results);
+			// 		$scope.data = ngGPlacesAPI.textSearch({ latitude: lat, longitude: lng, query: query })
+			// 			.then(function(data){
+			// 				console.log(data);
+			// 				return data;
+			// 		  	});
 			// 	});
-			//});
 		}
 	});
 
