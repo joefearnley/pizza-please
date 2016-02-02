@@ -9,15 +9,45 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="container" ng-controller="SearchCityController">
-    <form class="form-search">
-        <h2 class="form-search-heading">Find Pizza</h2>
-        <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" details="chosenPlaceDetails" googleplace/>
-        <div class="text-center">
-            <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block">Go</button>
+
+<div ng-controller="SearchController">
+
+    <div class="container">
+        <form class="form-search">
+            <h2 class="form-search-heading">Find Pizza</h2>
+            <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" details="chosenPlaceDetails" googleplace/>
+            <div class="text-center">
+                <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block">
+                    <span ng-show="!isLoading">Go!</span>
+                    <span ng-show="isLoading"><i class="glyphicon glyphicon-repeat normal-right-spinner"></i> Searching...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container-fluid" style="background-color: #000; height: 400px;" ng-show="resultsLoaded">
+
+    </div>
+
+    <div class="container results-list">
+        <div ng-repeat="location in locations">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="{{ location.image_url }}" alt="{{ location.name }}" />
+                </div>
+                <div class="col-md-3">
+                    <strong>{{ location.name }}</strong>
+                    <p>
+                        {{ location.location.display_address[0] }}<br>
+                        {{ location.location.display_address[1] }}
+                    </p>
+                    <p>
+                        {{ location.is_closed }}
+                    </p>
+                </div>
+            </div>
+            <hr>
         </div>
-    </form>
-    <div class="results">
     </div>
 </div>
 

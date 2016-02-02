@@ -1,31 +1,26 @@
 
-
 (function() {
 	var app = angular.module('pizzaPlease', ['ngGPlaces']);
 
-	app.controller('SearchCityController', function($scope, $http, ngGPlacesAPI) {
+	app.controller('SearchController', function($scope, $http, ngGPlacesAPI) {
 
-		$scope.title = 'Find Pizza';
+		$scope.title = 'Pizza Please';
+		$scope.isLoading = false;
+		$scope.resultsLoaded = false;
 
 		$scope.findPizza = function() {
-			var address = $scope.city.split(',').join('').split(' ').join('+');
+			$scope.isLoading = true;
+			$scope.resultsLoaded = false;
+			$http.get('http://localhost:3000/search?city=' + $scope.city).success(function(response) {
+				if (response.success) {
+					$scope.locations = response.locations;
+				} else {
+					console.log(response.error);
+				}
 
-			$http.get('http://localhost:3000?city=' + $scope.city).success(function(response) {
-				console.log(response);
+				$scope.isLoading = false;
+				$scope.resultsLoaded = true;
 			});
-
-			// $http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&key=AIzaSyCG6qB4A5qd7wy4N2OwHDIA1HvIxD_QLVw')
-			// 	.success(function(response) {
-			// 		var lat = response.results[0].geometry.location.lat;
-			// 		var lng = response.results[0].geometry.location.lng;
-			// 		var query = 'pizza' + $scope.city;
-			//
-			// 		$scope.data = ngGPlacesAPI.textSearch({ latitude: lat, longitude: lng, query: query })
-			// 			.then(function(data){
-			// 				console.log(data);
-			// 				return data;
-			// 		  	});
-			// 	});
 		}
 	});
 

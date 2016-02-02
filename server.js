@@ -4,6 +4,10 @@ var app = express();
 var request = require('request');
 var config = require('config');
 var Yelp = require('yelp');
+var path = require("path");
+
+app.use(express.static(__dirname + '/'));
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 var yelp = new Yelp({
 	consumer_key: config.get('Yelp.consumerKey'),
@@ -13,6 +17,10 @@ var yelp = new Yelp({
 });
 
 app.get('/', function (req, res) {
+	res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+app.get('/search', function (req, res) {
 
 	res.header("Access-Control-Allow-Origin", "*");
 
@@ -20,17 +28,14 @@ app.get('/', function (req, res) {
 	var results = {
 		success: true,
 		error: null,
-		data: []
+		locations: []
 	};
 
 	yelp.search({ term: 'pizza', location: city }).then(function (response) {
 		var businesses = response.businesses;
 
 		for (var i = 0; i < businesses.length; i++) {
-			results.data.push({
-				name: businesses[i].name,
-				coordinates: businesses[i].location.coordinate
-			});
+			results.locations.push(businesses[i]);
 		}
 
 		res.send(results);
