@@ -1,8 +1,8 @@
 
 (function() {
-	var app = angular.module('pizzaPlease', ['ngGPlaces']);
+	var app = angular.module('pizzaPlease', []);
 
-	app.controller('SearchController', function($scope, $http, ngGPlacesAPI) {
+	app.controller('SearchController', function($scope, $http) {
 
 		$scope.title = 'Pizza Please';
 		$scope.isLoading = false;
@@ -10,7 +10,7 @@
 
 		$scope.findPizza = function() {
 			$scope.isLoading = true;
-			$scope.resultsLoaded = false;
+			$scope.resultsLoaded = true;
 			$http.get('http://localhost:3000/search?city=' + $scope.city).success(function(response) {
 				if (response.success) {
 					$scope.locations = response.locations;
