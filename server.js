@@ -4,7 +4,7 @@ var app = express();
 var request = require('request');
 var config = require('config');
 var Yelp = require('yelp');
-var path = require("path");
+var path = require('path');
 
 app.use(express.static(__dirname + '/'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
@@ -21,8 +21,6 @@ app.get('/', function (req, res) {
 });
 
 app.get('/search', function (req, res) {
-
-	res.header("Access-Control-Allow-Origin", "*");
 
 	var city = req.query.city;
 	var results = {
