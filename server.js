@@ -10,10 +10,10 @@ app.use(express.static(__dirname + '/'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 var yelp = new Yelp({
-	consumer_key: config.get('Yelp.consumerKey'),
-	consumer_secret: config.get('Yelp.consumerSecret'),
-	token: config.get('Yelp.token'),
-	token_secret: config.get('Yelp.tokenSecret'),
+	consumer_key: process.env.YELP_CONSUMER_KEY,
+	consumer_secret: process.env.YELP_CONSUMER_SECRET,
+	token: process.env.YELP_TOKEN,
+	token_secret: process.env.YELP_TOKEN_SECRET,
 });
 
 app.get('/', function (req, res) {
@@ -46,4 +46,5 @@ app.get('/search', function (req, res) {
 
 app.listen(3000, function () {
 	console.log('Example app listening on port 3000!');
+	console.log(process.env.YELP_CONSUMER_KEY);
 });
