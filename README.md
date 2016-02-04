@@ -1,6 +1,6 @@
 Pizza Please
 ============
 
-Wanna see some pizza? Look no further:
+Simple node/angular app that looks pizza via Yelp based on the city you choose:
 
-<a href="http://joefearnley.com/pizza-please/" target="_blank">http://joefearnley.com/pizza-please/</a>
+<a href="https://pizza-please.heroku.com/" target="_blank">https://pizza-please.heroku.com/</a>
