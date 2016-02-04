@@ -2,9 +2,10 @@
 var express = require('express');
 var app = express();
 var request = require('request');
-var config = require('config');
 var Yelp = require('yelp');
 var path = require('path');
+
+require('dotenv').config();
 
 app.use(express.static(__dirname + '/'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
@@ -46,5 +47,4 @@ app.get('/search', function (req, res) {
 
 app.listen(3000, function () {
 	console.log('Example app listening on port 3000!');
-	console.log(process.env.YELP_CONSUMER_KEY);
 });
