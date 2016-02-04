@@ -19,7 +19,7 @@
 					var latitude = result[0].geometry.location.lat();
 					var longitude = result[0].geometry.location.lng();
 
-					$http.get('http://localhost:3000/search?city=' + $scope.city).success(function(response) {
+					$http.get('/search?city=' + $scope.city).success(function(response) {
 						if (response.success) {
 							$scope.locations = response.locations;
 
@@ -74,6 +74,9 @@
 		}
 	});
 
+	/**
+	 * A fork of https://gist.github.com/kirschbaum/fcac2ff50f707dae75dc
+	 */
 	app.directive('googleplace', function() {
 	    return {
 	        require: 'ngModel',
