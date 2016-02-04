@@ -32,7 +32,7 @@
         <div ng-repeat="location in locations">
             <div class="row">
                 <div class="col-md-2">
-                    <img src="{{ location.image_url }}" alt="{{ location.name }}" />
+                    <img ng-src="{{ location.image_url }}" alt="{{ location.name }}" />
                 </div>
                 <div class="col-md-3">
                     <strong>{{ location.name }}</strong>
