@@ -18,59 +18,58 @@
 				if (status === google.maps.GeocoderStatus.OK) {
 					var latitude = result[0].geometry.location.lat();
 					var longitude = result[0].geometry.location.lng();
-
-					$http.get('/search?city=' + $scope.city).success(function(response) {
-						if (response.success) {
-							$scope.locations = response.locations;
-
-							var mapOptions = {
-								zoom: 12,
-								center: new google.maps.LatLng(latitude, longitude),
-								scrollwheel: false
-							}
-							$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-							$scope.markers = [];
-
-						    var infoWindow = new google.maps.InfoWindow();
-
-						    var createMarker = function (location) {
-
-						        var marker = new google.maps.Marker({
-						            map: $scope.map,
-						            position: new google.maps.LatLng(
-										location.location.coordinate.latitude,
-										location.location.coordinate.longitude
-									),
-						            title: location.name
-						        });
-						        marker.content = '<div class="infoWindowContent">' + location.snippet_text + '</div>';
-
-						        google.maps.event.addListener(marker, 'click', function(){
-						            infoWindow.setContent('<h5>' + marker.title + '</h5>' + marker.content);
-						            infoWindow.open($scope.map, marker);
-						        });
-
-						        $scope.markers.push(marker);
-						    }
-
-						    for (i = 0; i < $scope.locations.length; i++){
-						        createMarker($scope.locations[i]);
-						    }
-
-						    $scope.openInfoWindow = function(e, selectedMarker){
-						        e.preventDefault();
-						        google.maps.event.trigger(selectedMarker, 'click');
-						    }
-						} else {
-							console.log(response.error);
-						}
-
-						$scope.isLoading = false;
-						$scope.resultsLoaded = true;
-					});
+					createMap(latitude, longitude);
 				}
 			});
+		}
+
+		var createMap = function(latitude, longitude) {
+			$http.get('/search?city=' + $scope.city).success(function(response) {
+				if (response.success) {
+					$scope.locations = response.locations;
+
+					var mapOptions = {
+						zoom: 12,
+						center: new google.maps.LatLng(latitude, longitude),
+						scrollwheel: false
+					}
+					$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+					$scope.markers = [];
+
+					for (i = 0; i < $scope.locations.length; i++){
+						createMarker($scope.locations[i]);
+					}
+
+					$scope.openInfoWindow = function(e, selectedMarker){
+						e.preventDefault();
+						google.maps.event.trigger(selectedMarker, 'click');
+					}
+				} else {
+					console.log(response.error);
+				}
+
+				$scope.isLoading = false;
+				$scope.resultsLoaded = true;
+			});
+		}
+
+		var createMarker = function (location) {
+			var marker = new google.maps.Marker({
+				map: $scope.map,
+				position: new google.maps.LatLng(
+					location.location.coordinate.latitude,
+					location.location.coordinate.longitude
+				),
+				title: location.name
+			});
+			marker.content = '<div class="infoWindowContent">' + location.snippet_text + '</div>';
+
+			google.maps.event.addListener(marker, 'click', function(){
+				infoWindow.setContent('<h5>' + marker.title + '</h5>' + marker.content);
+				infoWindow.open($scope.map, marker);
+			});
+
+			$scope.markers.push(marker);
 		}
 	});
 
