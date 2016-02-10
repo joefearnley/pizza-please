@@ -40,7 +40,7 @@
 						createMarker($scope.locations[i]);
 					}
 
-					$scope.openInfoWindow = function(e, selectedMarker){
+					$scope.openInfoWindow = function(e, selectedMarker) {
 						e.preventDefault();
 						google.maps.event.trigger(selectedMarker, 'click');
 					}
