@@ -8,6 +8,30 @@
 		$scope.isLoading = false;
 		$scope.resultsLoaded = false;
 
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				$scope.$apply(function() {
+					$scope.position = position;
+					var latlng = {
+						lat: $scope.position.coords.latitude,
+						lng: $scope.position.coords.longitude
+					};
+
+					var geocoder = new google.maps.Geocoder();
+					geocoder.geocode({'location': latlng}, function(results, status) {
+						if (status === google.maps.GeocoderStatus.OK) {
+							if (results[1]) {
+								$scope.city = results[1].formatted_address;
+								$scope.$apply();
+							}
+						} else {
+							console.log('Geocoder failed due to: ' + status);
+						}
+					});
+				});
+			});
+		}
+
 		$scope.findPizza = function() {
 			$scope.isLoading = true;
 			$scope.resultsLoaded = false;
