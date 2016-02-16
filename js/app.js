@@ -2,7 +2,7 @@
 (function() {
 	var app = angular.module('pizzaPlease', []);
 
-	app.controller('SearchController', function($scope, $http, locationService) {
+	app.controller('SearchController', function($scope, $http, $log, locationService) {
 
 		$scope.title = 'Pizza Please';
 		$scope.isLoading = false;
@@ -56,20 +56,25 @@
 			$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 			$scope.markers = [];
 
-			locationService.getLocations($scope.city).success(function(response) {
-				$scope.locations = response.locations;
-				for (i = 0; i < $scope.locations.length; i++){
-					createMarker($scope.locations[i]);
-				}
+			locationService.getLocations($scope.city)
+				.success(function(response) {
+					$scope.locations = response.locations;
+					for (i = 0; i < $scope.locations.length; i++){
+						createMarker($scope.locations[i]);
+					}
 
-				$scope.openInfoWindow = function(e, selectedMarker) {
-					e.preventDefault();
-					google.maps.event.trigger(selectedMarker, 'click');
-				}
+					$scope.openInfoWindow = function(e, selectedMarker) {
+						e.preventDefault();
+						google.maps.event.trigger(selectedMarker, 'click');
+					}
 
-				$scope.isLoading = false;
-				$scope.resultsLoaded = true;
-			});
+					$scope.isLoading = false;
+					$scope.resultsLoaded = true;
+				})
+				.error(function(data, status) {
+					$log.log(status);
+					$log.log(data.error);
+				});
 		}
 
 		var createMarker = function (location) {
