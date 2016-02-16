@@ -2,7 +2,7 @@
 (function() {
 	var app = angular.module('pizzaPlease', []);
 
-	app.controller('SearchController', function($scope, $http) {
+	app.controller('SearchController', function($scope, $http, locationService) {
 
 		$scope.title = 'Pizza Please';
 		$scope.isLoading = false;
@@ -48,28 +48,23 @@
 		}
 
 		var createMap = function(latitude, longitude) {
-			$http.get('/search?city=' + $scope.city).success(function(response) {
-				if (response.success) {
-					$scope.locations = response.locations;
+			var mapOptions = {
+				zoom: 12,
+				center: new google.maps.LatLng(latitude, longitude),
+				scrollwheel: false
+			}
+			$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
+			$scope.markers = [];
 
-					var mapOptions = {
-						zoom: 12,
-						center: new google.maps.LatLng(latitude, longitude),
-						scrollwheel: false
-					}
-					$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-					$scope.markers = [];
+			locationService.getLocations($scope.city).success(function(response) {
+				$scope.locations = response.locations;
+				for (i = 0; i < $scope.locations.length; i++){
+					createMarker($scope.locations[i]);
+				}
 
-					for (i = 0; i < $scope.locations.length; i++){
-						createMarker($scope.locations[i]);
-					}
-
-					$scope.openInfoWindow = function(e, selectedMarker) {
-						e.preventDefault();
-						google.maps.event.trigger(selectedMarker, 'click');
-					}
-				} else {
-					console.log(response.error);
+				$scope.openInfoWindow = function(e, selectedMarker) {
+					e.preventDefault();
+					google.maps.event.trigger(selectedMarker, 'click');
 				}
 
 				$scope.isLoading = false;
@@ -94,6 +89,13 @@
 			});
 
 			$scope.markers.push(marker);
+		}
+	});
+
+	app.service('locationService', function($http) {
+		var locations = [];
+		this.getLocations = function(city) {
+			return $http.get('/search?city=' + city);
 		}
 	});
 
