@@ -19,7 +19,7 @@
             <div class="form-group col-md-4">
                 <div class="text-center">
                     <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block">
-                        <i ng-class="{'glyphicon glyphicon-repeat normal-right-spinner': isLoading }"></i>
+                        <i ng-class="{'glyphicon glyphicon-repeat normal-right-spinner': isLoading, 'glyphicon glyphicon-map-marker': !isLoading }"></i>
                         <span ng-if="!isLoading">Find Pizza</span>
                         <span ng-if="isLoading">Searching...</span>
                     </button>
@@ -28,24 +28,22 @@
         </form>
     </div>
 
-    <div id="map" class="container-fluid" style="background-color: #000; height: 400px;" ng-show="resultsLoaded">
+    <div id="map" style="background-color: #000; height: 400px;" ng-show="resultsLoaded">
     </div>
 
-    <div class="results-list" ng-show="resultsLoaded">
+    <div class="container results-list" ng-show="resultsLoaded">
         <div class="row">
-            <div class="col-md-3" ng-repeat="location in locations">
-                <div class="row" ng-show="!location.is_closed">
-                    <div class="col-md-5">
-                        <img ng-src="{{ location.image_url }}" alt="{{ location.name }}" />
-                    </div>
-                    <div class="col-md-7" ng-show="!location.is_closed">
-                        <strong>{{ location.name }}</strong>
-                        <p>
-                            {{ location.location.display_address[0] }}<br>
-                            {{ location.location.display_address[1] }}<br>
-                            Rating: <img ng-src="{{ location.rating_img_url }}" alt="" />
-                        </p>
-                    </div>
+            <div class="col-md-3 large-margin-bottom" ng-repeat="location in locations">
+                <div ng-show="!location.is_closed">
+                    <strong>{{ location.name }}</strong>
+                    <p>
+                        {{ location.location.display_address[0] }}<br>
+                        {{ location.location.display_address[1] }}<br>
+                        Rating: <img ng-src="{{ location.rating_img_url }}" alt="" />
+                    </p>
+                    <p>
+                        <a href="tel:{{ location .display_phone }}" class="btn btn-default"><i class="glyphicon glyphicon-earphone"></i> Call</a>
+                    </p>
                 </div>
             </div>
         </div>
