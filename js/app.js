@@ -3,7 +3,6 @@
 	var app = angular.module('pizzaPlease', []);
 
 	app.controller('SearchController', function($scope, $http, $log, locationService) {
-
 		$scope.title = 'Pizza Please';
 		$scope.isLoading = false;
 		$scope.resultsLoaded = false;
@@ -59,7 +58,7 @@
 			locationService.getLocations($scope.city)
 				.success(function(response) {
 					$scope.locations = response.locations;
-					for (i = 0; i < $scope.locations.length; i++){
+					for (i = 0; i < $scope.locations.length; i++) {
 						createMarker($scope.locations[i]);
 					}
 
@@ -78,6 +77,7 @@
 		}
 
 		var createMarker = function (location) {
+			var infoWindow = new google.maps.InfoWindow();
 			var marker = new google.maps.Marker({
 				map: $scope.map,
 				position: new google.maps.LatLng(
