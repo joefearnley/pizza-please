@@ -49,9 +49,9 @@
 		var createMap = function(latitude, longitude) {
 			var mapOptions = {
 				zoom: 12,
-				center: new google.maps.LatLng(latitude, longitude),
-				scrollwheel: false
-			}
+				center: { lat: latitude, lng: longitude }
+			};
+
 			$scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 			$scope.markers = [];
 
@@ -69,6 +69,10 @@
 
 					$scope.isLoading = false;
 					$scope.resultsLoaded = true;
+
+                    setTimeout(function() {
+                        google.maps.event.trigger($scope.map, 'resize');
+                    }, 300);
 				})
 				.error(function(data, status) {
 					$log.log(status);

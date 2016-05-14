@@ -28,7 +28,7 @@
         </form>
     </div>
 
-    <div id="map" style="background-color: #000; height: 400px;" ng-show="resultsLoaded">
+    <div id="map" ng-show="resultsLoaded">
     </div>
 
     <div class="container results-list" ng-show="resultsLoaded">
@@ -51,10 +51,10 @@
 
 </div>
 
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script type="text/javascript" src="bower_components/angular/angular.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs&libraries=places"></script>
-<script type="text/javascript" src="js/app.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs&libraries=places"></script>
+<script src="js/app.js"></script>
 <script>
     $(function() {
         $('body').css('display', 'none').fadeIn(500);
