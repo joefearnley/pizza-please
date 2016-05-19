@@ -43,7 +43,7 @@
                     createMap(latitude, longitude);
                 }
             });
-        }
+        };
 
         var createMap = function (latitude, longitude) {
             var mapOptions = {
@@ -58,27 +58,28 @@
             locationService.getLocations($scope.city)
                 .success(function (response) {
                     $scope.locations = response.locations;
-                    for (i = 0; i < $scope.locations.length; i++) {
+                    for (var i = 0; i < $scope.locations.length; i++) {
                         createMarker($scope.locations[i]);
                     }
 
                     $scope.openInfoWindow = function (e, selectedMarker) {
                         e.preventDefault();
                         google.maps.event.trigger(selectedMarker, 'click');
-                    }
+                    };
 
                     $scope.isLoading = false;
                     $scope.resultsLoaded = true;
 
                     setTimeout(function () {
                         google.maps.event.trigger($scope.map, 'resize');
+                        $scope.map.setCenter({ lat: latitude, lng: longitude });
                     }, 300);
                 })
                 .error(function (data, status) {
                     $log.log(status);
                     $log.log(data.error);
                 });
-        }
+        };
 
         var createMarker = function (location) {
             var infoWindow = new google.maps.InfoWindow();
