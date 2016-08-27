@@ -28,15 +28,23 @@ app.get('/', function (req, res) {
 });
 
 app.get('/search', function (req, res) {
-
-	var city = req.query.city;
 	var results = {
 		success: true,
 		error: null,
 		locations: []
 	};
 
-	yelp.search({ term: 'pizza', location: city }).then(function (response) {
+    var params = {
+        term: 'pizza'
+    };
+
+    if (req.query.city) {
+        params.location = req.query.city;
+    } else {
+        params.ll = req.query.ll;
+    }
+
+	yelp.search(params).then(function (response) {
 		var businesses = response.businesses;
 
 		for (var i = 0; i < businesses.length; i++) {
