@@ -17,22 +17,22 @@ app.use(express.static(__dirname + '/'));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 var yelp = new Yelp({
-	consumer_key: process.env.YELP_CONSUMER_KEY,
-	consumer_secret: process.env.YELP_CONSUMER_SECRET,
-	token: process.env.YELP_TOKEN,
-	token_secret: process.env.YELP_TOKEN_SECRET,
+    consumer_key: process.env.YELP_CONSUMER_KEY,
+    consumer_secret: process.env.YELP_CONSUMER_SECRET,
+    token: process.env.YELP_TOKEN,
+    token_secret: process.env.YELP_TOKEN_SECRET,
 });
 
 app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname+'/index.html'));
+    res.sendFile(path.join(__dirname+'/index.html'));
 });
 
 app.get('/search', function (req, res) {
-	var results = {
-		success: true,
-		error: null,
-		locations: []
-	};
+    var results = {
+        success: true,
+        error: null,
+        locations: []
+    };
 
     var params = {
         term: 'pizza'
@@ -44,21 +44,21 @@ app.get('/search', function (req, res) {
         params.ll = req.query.ll;
     }
 
-	yelp.search(params).then(function (response) {
-		var businesses = response.businesses;
+    yelp.search(params).then(function (response) {
+        var businesses = response.businesses;
 
-		for (var i = 0; i < businesses.length; i++) {
-			results.locations.push(businesses[i]);
-		}
+        for (var i = 0; i < businesses.length; i++) {
+            results.locations.push(businesses[i]);
+        }
 
-		res.send(results);
-	}).catch(function (err) {
-		results.success = true,
-		results.error = error;
-		res.send(results);
-	});
+        res.send(results);
+    }).catch(function (err) {
+        results.success = true,
+        results.error = error;
+        res.send(results);
+    });
 });
 
 app.listen(process.env.PORT || 5000, function () {
-	console.log('Example app listening on port 5000!');
+    console.log('Example app listening on port 5000!');
 });
