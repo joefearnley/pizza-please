@@ -1,6 +1,7 @@
+
 var app = angular.module('pizzaPlease', []);
 
-app.controller('SearchController', function ($scope, $http, $log, locationService) {
+app.controller('SearchController', function ($scope, $http, $log, SearchService) {
     $scope.title = 'Pizza Please';
     $scope.isLoading = false;
     $scope.resultsLoaded = false;
@@ -54,8 +55,8 @@ app.controller('SearchController', function ($scope, $http, $log, locationServic
         $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
         $scope.markers = [];
 
-        locationService.getLocations($scope.city)
-            .success(function (response) {
+        SearchService.search($scope.city)
+            .then(function (response) {
                 $scope.locations = response.locations;
                 for (var i = 0; i < $scope.locations.length; i++) {
                     createMarker($scope.locations[i]);
@@ -101,10 +102,12 @@ app.controller('SearchController', function ($scope, $http, $log, locationServic
     }
 });
 
-app.service('locationService', function ($http) {
+app.factory('SearchService', function ($http) {
     var locations = [];
-    this.getLocations = function (city) {
-        return $http.get('/search?city=' + city);
+    return {
+        search: function (city) {
+            return $http.get('/search?city=' + city);
+        }
     }
 });
 
