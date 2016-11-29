@@ -36,7 +36,6 @@
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-spec-reporter": "0.0.26",
-    "nock": "^9.0.2",
-    "request": "^2.79.0"
+    "nock": "^9.0.2"
   }
 }
