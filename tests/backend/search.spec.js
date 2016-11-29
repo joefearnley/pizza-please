@@ -1,10 +1,8 @@
 
-'use strict';
-
-let request = require('request');
-let nock = require ('nock');
-let baseUrl = 'http://localhost:5000/';
-let city = 'Norton Shores, MI'
+var request = require('request');
+var nock = require ('nock');
+var baseUrl = 'http://localhost:5000/';
+var city = 'Norton Shores, MI'
 
 describe('Search', function() {
     describe('validate GET /search', function() {
@@ -62,7 +60,7 @@ describe('Search', function() {
                 expect(response.locations.length).toBe(3);
             });
         });
-        
+
         it('should return correct location information', function() {
             request.get(url, function(error, response, body) {
                 var firstLocation = response.locations[0];

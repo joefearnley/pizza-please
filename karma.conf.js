@@ -8,19 +8,17 @@ module.exports = function(config) {
             'node_modules/angular/angular.js',
             'node_modules/angular-mocks/angular-mocks.js',
             'js/app.js',
-            'js/tests/*.js'
+            'tests/frontend/*.js'
         ],
-        exclude: [
-        ],
-        preprocessors: {
-        },
+        exclude: [],
+        preprocessors: {},
         reporters: ['spec'],
         port: 9876,
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
         browsers: ['PhantomJS'],
-        singleRun: false,
+        singleRun: true,
         concurrency: Infinity
     });
 }

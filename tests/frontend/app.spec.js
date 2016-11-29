@@ -116,56 +116,56 @@ describe('Pizza Please App Test Suite', function() {
     });
 });
 
-// describe('Search Service', function() {
-//     var LocationService;
-//     var $httpBackend;
+describe('Search Service', function() {
+    var LocationService;
+    var $httpBackend;
 
-//     beforeEach(angular.mock.module('pizzaPlease'));
+    beforeEach(angular.mock.module('pizzaPlease'));
 
-//     beforeEach(inject(function(_SearchService_, $rootScope, _$httpBackend_) {
-//         SearchService = _SearchService_;
-//         $httpBackend = _$httpBackend_;
-//     }));
+    beforeEach(inject(function(_SearchService_, $rootScope, _$httpBackend_) {
+        SearchService = _SearchService_;
+        $httpBackend = _$httpBackend_;
+    }));
     
-//     afterEach(function() {
-//         $httpBackend.verifyNoOutstandingExpectation();
-//         $httpBackend.verifyNoOutstandingRequest();
-//     });
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
 
-//     it('should exist', function() {
-//         expect(SearchService).toBeDefined();
-//     });
+    it('should exist', function() {
+        expect(SearchService).toBeDefined();
+    });
 
-//     describe('search', function() {
+    describe('search', function() {
 
-//         var fakeResponse = {
-//             success: true,
-//             error: null,
-//             locations: [
-//                 {
-//                     name: "Mr Scrib's Pizza",
-//                     phone: "2317331857",
-//                     location: {
-//                         city: "Muskegon",
-//                         display_address: [
-//                             "3044 Henry St",
-//                             "Muskegon, MI 49441"
-//                         ]
-//                     }
-//                 }
-//             ]
-//         };
+        var fakeResponse = {
+            success: true,
+            error: null,
+            locations: [
+                {
+                    name: "Mr Scrib's Pizza",
+                    phone: "2317331857",
+                    location: {
+                        city: "Muskegon",
+                        display_address: [
+                            "3044 Henry St",
+                            "Muskegon, MI 49441"
+                        ]
+                    }
+                }
+            ]
+        };
 
-//         $httpBackend.when('GET', '/search')
-//             .respond(200, fakeResponse);
+        // $httpBackend.when('GET', '/search')
+        //     .respond(200, fakeResponse);
 
-//         it('should find locations', function() {
-//             $httpBackend.flush();
+        // it('should find locations', function() {
+        //     $httpBackend.flush();
 
-//             locations = SearchService.search();
+        //     locations = SearchService.search();
 
-//             expect(location.length).toBe(1);
-//         });
-//     });
+        //     expect(location.length).toBe(1);
+        // });
+    });
 
-// });
+});
