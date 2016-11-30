@@ -75,7 +75,7 @@ describe('Pizza Please App Test Suite', function() {
             $httpBackend = _$httpBackend_;
             SearchService = _SearchService_;
 
-            $httpBackend.whenGET('/search?city=' + city).respond({});
+            $httpBackend.when('GET', '/search?city=' + city).respond({});
         }));
 
         it('should exist', function() {
