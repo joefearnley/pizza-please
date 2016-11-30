@@ -67,15 +67,37 @@ describe('Pizza Please App Test Suite', function() {
     describe('Search Service', function() {
         var SearchService;
         var $httpBackend;
+        var $q;
+        var response;
         var city = 'Norton Shores, MI';
+        var fakeResponse = {
+            success: true,
+            error: null,
+            display_phone: "+1-231-733-1857",
+            locations: [
+                {
+                    name: "Mr Scrib's Pizza",
+                    phone: "2317331857",
+                    location: {
+                        city: "Muskegon",
+                        display_address: [
+                            "3044 Henry St",
+                            "Muskegon, MI 49441"
+                        ]
+                    }
+                },{},{}
+            ]
+        };
 
         beforeEach(angular.mock.module('pizzaPlease'));
 
-        beforeEach(inject(function(_$httpBackend_, _SearchService_) {
+        beforeEach(inject(function(_$httpBackend_, _$q_, _SearchService_) {
             $httpBackend = _$httpBackend_;
+            $q = _$q_;
             SearchService = _SearchService_;
 
-            $httpBackend.when('GET', '/search?city=' + city).respond({});
+            $httpBackend.when('GET', '/search?city=' + city)
+                .respond(200, $q.when(fakeResponse));
         }));
 
         it('should exist', function() {
@@ -85,5 +107,28 @@ describe('Pizza Please App Test Suite', function() {
         it('should return a promise', function () {
           expect(SearchService.search(city).then).toBeDefined();
         });
+
+        describe('search', function() {
+            beforeEach(inject(function(_$httpBackend_, _$q_, _SearchService_) {
+                response = {};
+
+                spyOn(SearchService, 'search').and.callThrough();
+            }));
+
+            it('should return search results', function() {
+                expect(SearchService.search).not.toHaveBeenCalled();
+                expect(response).toEqual({});
+
+                SearchService.search(city).then(function(res) {
+                    response = res;
+                });
+
+                $httpBackend.flush();
+
+                expect(SearchService.search).toHaveBeenCalledWith(city);
+                expect(response.success).toBe(true);
+                // expect(response.locations.length).toBe(3);
+            });
+        })
     });
 });
