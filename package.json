@@ -4,7 +4,7 @@
   "description": "Pizza Please ============",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node tests/backend && node_modules/karma/bin/karma start",
+    "test": "./node_modules/.bin/jasmine-node tests/backend",
     "start": "node server.js"
   },
   "repository": {

@@ -51,14 +51,14 @@ describe('Pizza Please App Test Suite', function() {
         describe('find pizza', function() {
             it('should be loading', function() {
                 scope.findPizza();
-
+                
                 expect(scope.isLoading).toBe(true);
                 expect(scope.resultsLoaded).toBe(false);
             });
 
             it('should call the geocoder', function() {
                 scope.findPizza();
-
+                
                 expect(geocoder.geocode).toHaveBeenCalled();
             });
         });
@@ -68,7 +68,6 @@ describe('Pizza Please App Test Suite', function() {
         var SearchService;
         var $httpBackend;
         var $q;
-        var response;
         var city = 'Norton Shores, MI';
         var fakeResponse = {
             success: true,
@@ -95,9 +94,6 @@ describe('Pizza Please App Test Suite', function() {
             $httpBackend = _$httpBackend_;
             $q = _$q_;
             SearchService = _SearchService_;
-
-            $httpBackend.when('GET', '/search?city=' + city)
-                .respond(200, $q.when(fakeResponse));
         }));
 
         it('should exist', function() {
@@ -109,24 +105,30 @@ describe('Pizza Please App Test Suite', function() {
         });
 
         describe('search', function() {
-            beforeEach(inject(function(_$httpBackend_, _$q_, _SearchService_) {
-                response = {};
+            var result;
+            
+            beforeEach(inject(function() {
+                result = {};
 
                 spyOn(SearchService, 'search').and.callThrough();
             }));
 
             it('should return search results', function() {
+                $httpBackend.whenGET('/search?city=' + city)
+                    .respond(200, $q.when(fakeResponse));
+                
                 expect(SearchService.search).not.toHaveBeenCalled();
-                expect(response).toEqual({});
+                expect(result).toEqual({});
 
-                SearchService.search(city).then(function(res) {
-                    response = res;
-                });
+                SearchService.search(city)
+                    .then(function(res) {
+                        result = res;
+                    });
 
                 $httpBackend.flush();
 
                 expect(SearchService.search).toHaveBeenCalledWith(city);
-                expect(response.success).toBe(true);
+                expect(result.success).toBe(true);
                 // expect(response.locations.length).toBe(3);
             });
         })
