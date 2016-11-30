@@ -18,7 +18,7 @@ describe('Pizza Please App Test Suite', function() {
             SearchService = _SearchService_;
             searchController = _$controller_('SearchController', {
                 $scope: scope,
-                SearchService: _SearchService_
+                SearchService: SearchService
             });
 
             var constructorSpy = spyOn(google.maps, 'Geocoder');
@@ -58,6 +58,7 @@ describe('Pizza Please App Test Suite', function() {
 
             it('should call the geocoder', function() {
                 scope.findPizza();
+
                 expect(geocoder.geocode).toHaveBeenCalled();
             });
         });
@@ -74,8 +75,7 @@ describe('Pizza Please App Test Suite', function() {
             $httpBackend = _$httpBackend_;
             SearchService = _SearchService_;
 
-            $httpBackend.whenGET('/search?city=' + city)
-                .respond({});
+            $httpBackend.whenGET('/search?city=' + city).respond({});
         }));
 
         it('should exist', function() {
