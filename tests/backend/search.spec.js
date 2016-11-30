@@ -1,10 +1,11 @@
 
 var request = require('request');
-var nock = require ('nock');
-var baseUrl = 'http://localhost:5000/';
-var city = 'Norton Shores, MI'
+var nock = require('nock');
 
-describe('Search', function() {
+describe('Search API', function() {
+    var baseUrl = 'http://localhost:5000/';
+    var city = 'Norton Shores, MI';
+
     describe('validate GET /search', function() {
         it('should return 422 when no city is provided', function() {
             request.get((baseUrl + '/search?city='), function(error, response, body) {
@@ -36,7 +37,7 @@ describe('Search', function() {
                     },{},{}
                 ]
             };
-            
+
             nock(baseUrl)
                 .get('/search?city=' + city)
                 .reply(200, fakeResponse);
@@ -53,7 +54,7 @@ describe('Search', function() {
                 expect(response.success).toBe(true);
             });
         });
-        
+
         it('should return locations', function() {
             request.get(url, function(error, response, body) {
                 expect(response.locations).toBeDefined();
@@ -64,7 +65,7 @@ describe('Search', function() {
         it('should return correct location information', function() {
             request.get(url, function(error, response, body) {
                 var firstLocation = response.locations[0];
-                
+
                 expect(firstLocation.name).toBe("Mr Scrib's Pizza");
                 expect(firstLocation.display_phone).toBe("+1-231-733-1857");
                 expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");

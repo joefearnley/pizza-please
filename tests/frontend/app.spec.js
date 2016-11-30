@@ -1,42 +1,37 @@
 describe('Pizza Please App Test Suite', function() {
     var searchController;
     var scope;
-    var $httpBackend;
+    var SearchService;
+    var geocoder;
 
-    describe('App loaded and is working', function() {
-        it('loaded', function() {
+    describe('App loaded', function() {
+        it('should be loaded', function() {
             expect(app).toBeDefined();
         });
     });
 
     describe('Search Controller', function() {
-
         beforeEach(angular.mock.module('pizzaPlease'));
 
-        beforeEach(angular.mock.inject(function(_$controller_, $rootScope, _$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-            
+        beforeEach(angular.mock.inject(function(_$controller_, $rootScope, _SearchService_) {
             scope = $rootScope.$new();
-            scope.city = 'Norton Shores, MI';
-            searchController = _$controller_('SearchController', { $scope: scope });
+            SearchService = _SearchService_;
+            searchController = _$controller_('SearchController', {
+                $scope: scope,
+                SearchService: _SearchService_
+            });
+
+            var constructorSpy = spyOn(google.maps, 'Geocoder');
+            geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
+            constructorSpy.and.returnValue(geocoder);
         }));
-
-        // beforeEach(inject(function($injector) {
-        //     $httpBackend = $injector.get('$httpBackend');
-        // }));
-        
-        afterEach(function() {
-            $httpBackend.verifyNoOutstandingExpectation();
-            $httpBackend.verifyNoOutstandingRequest();
-        });
-
 
         it('should exist', function() {
             expect(searchController).toBeDefined();
         });
 
         describe('initialize controller', function() {
-            it('should have title Pizza Please, not be loading, and not have results loaded', function() {
+            it('should have title Pizza Please', function() {
                 expect(scope.title).toBe('Pizza Please');
             });
 
@@ -54,10 +49,6 @@ describe('Pizza Please App Test Suite', function() {
         });
 
         describe('find pizza', function() {
-            it('should have a city', function() {
-                expect(scope.city).toBeDefined();
-            });
-
             it('should be loading', function() {
                 scope.findPizza();
 
@@ -65,107 +56,34 @@ describe('Pizza Please App Test Suite', function() {
                 expect(scope.resultsLoaded).toBe(false);
             });
 
-            it('should find pizza locations', function() {
-
-                var fakeResponse = {
-                    success: true,
-                    error: null,
-                    locations: [
-                        {
-                            name: "Mr Scrib's Pizza",
-                            phone: "2317331857",
-                            location: {
-                                city: "Muskegon",
-                                display_address: [
-                                    "3044 Henry St",
-                                    "Muskegon, MI 49441"
-                                ]
-                            }
-                        }, {}, {}
-                    ]
-                };
-
-                //$httpBackend.when('GET', '/search')
-                //    .respond(200, fakeResponse);
-                    
-
-
+            it('should call the geocoder', function() {
                 scope.findPizza();
-
-                expect(scope.isLoading).toBe(true);
-                expect(scope.resultsLoaded).toBe(false);
-
-                //$httpBackend.flush();
-
-
-                // should have locations
-                //expect(scope.locations).toBeDefined();
-                //expect(scope.locations.length).toBe(3);
-
-                // should have a map
-                //expect(scope.map).toBeDefined();
-
-                // should have markers
-                //expect(scope.map).toBeDefined();
-
-                //expect(scope.isLoading).toBe(false);
-                //expect(scope.resultsLoaded).toBe(true);
+                expect(geocoder.geocode).toHaveBeenCalled();
             });
-
         });
     });
-});
 
-describe('Search Service', function() {
-    var LocationService;
-    var $httpBackend;
+    describe('Search Service', function() {
+        var SearchService;
+        var $httpBackend;
+        var city = 'Norton Shores, MI';
 
-    beforeEach(angular.mock.module('pizzaPlease'));
+        beforeEach(angular.mock.module('pizzaPlease'));
 
-    beforeEach(inject(function(_SearchService_, $rootScope, _$httpBackend_) {
-        SearchService = _SearchService_;
-        $httpBackend = _$httpBackend_;
-    }));
-    
-    afterEach(function() {
-        $httpBackend.verifyNoOutstandingExpectation();
-        $httpBackend.verifyNoOutstandingRequest();
+        beforeEach(inject(function(_$httpBackend_, _SearchService_) {
+            $httpBackend = _$httpBackend_;
+            SearchService = _SearchService_;
+
+            $httpBackend.whenGET('/search?city=' + city)
+                .respond({});
+        }));
+
+        it('should exist', function() {
+            expect(SearchService).toBeDefined();
+        });
+
+        it('should return a promise', function () {
+          expect(SearchService.search(city).then).toBeDefined();
+        });
     });
-
-    it('should exist', function() {
-        expect(SearchService).toBeDefined();
-    });
-
-    describe('search', function() {
-
-        var fakeResponse = {
-            success: true,
-            error: null,
-            locations: [
-                {
-                    name: "Mr Scrib's Pizza",
-                    phone: "2317331857",
-                    location: {
-                        city: "Muskegon",
-                        display_address: [
-                            "3044 Henry St",
-                            "Muskegon, MI 49441"
-                        ]
-                    }
-                }
-            ]
-        };
-
-        // $httpBackend.when('GET', '/search')
-        //     .respond(200, fakeResponse);
-
-        // it('should find locations', function() {
-        //     $httpBackend.flush();
-
-        //     locations = SearchService.search();
-
-        //     expect(location.length).toBe(1);
-        // });
-    });
-
 });

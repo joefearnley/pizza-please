@@ -103,7 +103,6 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
 });
 
 app.factory('SearchService', function ($http) {
-    var locations = [];
     return {
         search: function (city) {
             return $http.get('/search?city=' + city);
