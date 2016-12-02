@@ -110,26 +110,35 @@ describe('Pizza Please App Test Suite', function() {
             beforeEach(inject(function() {
                 result = {};
 
-                spyOn(SearchService, 'search').and.callThrough();
+                //spyOn(SearchService, 'search').and.callThrough();
             }));
 
             it('should return search results', function() {
-                $httpBackend.whenGET('/search?city=' + city)
-                    .respond(200, $q.when(fakeResponse));
+                $httpBackend.expectGET('/search?city=' + city)
+                    .respond(200, fakeResponse);
                 
-                expect(SearchService.search).not.toHaveBeenCalled();
+                //expect(SearchService.search).not.toHaveBeenCalled();
                 expect(result).toEqual({});
 
                 SearchService.search(city)
                     .then(function(res) {
                         result = res;
+                        
+                        
+                        expect(result.success).toBe(true);
+                        expect(result.locations.length).toBe(3);
+                        
+                        var firstLocation = result.locations[0];
+                        
+                        expect(firstLocation.name).toBe("Mr Scrib's Pizza");
+                        expect(firstLocation.display_phone).toBe("+1-231-733-1857");
+                        expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
+                        expect(firstLocation.location.display_address[0]).toBe("Muskegon, MI 49441");
                     });
-
+                    
                 $httpBackend.flush();
 
-                expect(SearchService.search).toHaveBeenCalledWith(city);
-                expect(result.success).toBe(true);
-                // expect(response.locations.length).toBe(3);
+                //expect(SearchService.search).toHaveBeenCalledWith(city);
             });
         })
     });
