@@ -22,13 +22,11 @@ describe('Search API', function() {
             fakeResponse = {
                 success: true,
                 error: null,
-                display_phone: "+1-231-733-1857",
                 locations: [
                     {
                         name: "Mr Scrib's Pizza",
-                        phone: "2317331857",
+                        display_phone: "+1-231-733-1857",
                         location: {
-                            city: "Muskegon",
                             display_address: [
                                 "3044 Henry St",
                                 "Muskegon, MI 49441"
@@ -67,9 +65,9 @@ describe('Search API', function() {
                 var firstLocation = response.locations[0];
 
                 expect(firstLocation.name).toBe("Mr Scrib's Pizza");
-                expect(firstLocation.display_phone).toBe("+1-231-733-1857");
+                expect(firstLocation.location.display_phone).toBe("+1-231-733-1857");
                 expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
-                expect(firstLocation.location.display_address[0]).toBe("Muskegon, MI 49441");
+                expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
             });
         });
     });

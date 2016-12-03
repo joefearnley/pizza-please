@@ -23,7 +23,7 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
                             $scope.$apply();
                         }
                     } else {
-                        console.log('Geocoder failed due to: ' + status);
+                        $log.log('Geocoder failed due to: ' + status);
                     }
                 });
             });
@@ -40,12 +40,12 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
             if (status === google.maps.GeocoderStatus.OK) {
                 var latitude = result[0].geometry.location.lat();
                 var longitude = result[0].geometry.location.lng();
-                createMap(latitude, longitude);
+                $scope.createMap(latitude, longitude);
             }
         });
     };
 
-    var createMap = function (latitude, longitude) {
+    $scope.createMap = function (latitude, longitude) {
         var mapOptions = {
             zoom: 12,
             center: { lat: latitude, lng: longitude },
@@ -59,7 +59,7 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
             .then(function (response) {
                 $scope.locations = response.locations;
                 for (var i = 0; i < $scope.locations.length; i++) {
-                    createMarker($scope.locations[i]);
+                    $scope.createMarker($scope.locations[i]);
                 }
 
                 $scope.openInfoWindow = function (e, selectedMarker) {
@@ -75,13 +75,13 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
                     $scope.map.setCenter({ lat: latitude, lng: longitude });
                 }, 300);
             })
-            .error(function (data, status) {
+            .catch(function (data, status) {
                 $log.log(status);
                 $log.log(data.error);
             });
     };
 
-    var createMarker = function (location) {
+    $scope,createMarker = function (location) {
         var infoWindow = new google.maps.InfoWindow();
         var marker = new google.maps.Marker({
             map: $scope.map,

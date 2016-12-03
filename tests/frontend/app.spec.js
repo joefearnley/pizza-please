@@ -21,9 +21,9 @@ describe('Pizza Please App Test Suite', function() {
                 SearchService: SearchService
             });
 
-            var constructorSpy = spyOn(google.maps, 'Geocoder');
+            var geocodeConstructorSpy = spyOn(google.maps, 'Geocoder');
             geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
-            constructorSpy.and.returnValue(geocoder);
+            geocodeConstructorSpy.and.returnValue(geocoder);
         }));
 
         it('should exist', function() {
@@ -51,14 +51,20 @@ describe('Pizza Please App Test Suite', function() {
         describe('find pizza', function() {
             it('should be loading', function() {
                 scope.findPizza();
-                
+
                 expect(scope.isLoading).toBe(true);
                 expect(scope.resultsLoaded).toBe(false);
             });
 
             it('should call the geocoder', function() {
                 scope.findPizza();
-                
+
+                expect(geocoder.geocode).toHaveBeenCalled();
+            });
+
+            it('should call the geocoder', function() {
+                scope.findPizza();
+
                 expect(geocoder.geocode).toHaveBeenCalled();
             });
         });
@@ -67,18 +73,16 @@ describe('Pizza Please App Test Suite', function() {
     describe('Search Service', function() {
         var SearchService;
         var $httpBackend;
-        var $q;
+        var scope;
         var city = 'Norton Shores, MI';
         var fakeResponse = {
             success: true,
             error: null,
-            display_phone: "+1-231-733-1857",
             locations: [
                 {
                     name: "Mr Scrib's Pizza",
-                    phone: "2317331857",
+                    display_phone: "+1-231-733-1857",
                     location: {
-                        city: "Muskegon",
                         display_address: [
                             "3044 Henry St",
                             "Muskegon, MI 49441"
@@ -90,55 +94,60 @@ describe('Pizza Please App Test Suite', function() {
 
         beforeEach(angular.mock.module('pizzaPlease'));
 
-        beforeEach(inject(function(_$httpBackend_, _$q_, _SearchService_) {
+        beforeEach(inject(function(_$httpBackend_, _SearchService_) {
             $httpBackend = _$httpBackend_;
-            $q = _$q_;
             SearchService = _SearchService_;
         }));
 
-        it('should exist', function() {
-            expect(SearchService).toBeDefined();
-        });
+        describe('initialization', function() {
+            it('should exist', function() {
+                expect(SearchService).toBeDefined();
+            });
 
-        it('should return a promise', function () {
-          expect(SearchService.search(city).then).toBeDefined();
-        });
+            it('should return a promise', function () {
+              expect(SearchService.search(city).then).toBeDefined();
+            });
+        })
 
         describe('search', function() {
             var result;
-            
-            beforeEach(inject(function() {
+
+            beforeEach(function () {
                 result = {};
-
-                //spyOn(SearchService, 'search').and.callThrough();
-            }));
-
-            it('should return search results', function() {
-                $httpBackend.expectGET('/search?city=' + city)
+                $httpBackend.whenGET('/search?city=' + city)
                     .respond(200, fakeResponse);
-                
-                //expect(SearchService.search).not.toHaveBeenCalled();
-                expect(result).toEqual({});
+            });
 
-                SearchService.search(city)
-                    .then(function(res) {
-                        result = res;
-                        
-                        
-                        expect(result.success).toBe(true);
-                        expect(result.locations.length).toBe(3);
-                        
-                        var firstLocation = result.locations[0];
-                        
-                        expect(firstLocation.name).toBe("Mr Scrib's Pizza");
-                        expect(firstLocation.display_phone).toBe("+1-231-733-1857");
-                        expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
-                        expect(firstLocation.location.display_address[0]).toBe("Muskegon, MI 49441");
-                    });
-                    
+            it('should perform a successful search', function() {
+                expect(result).toEqual({});
+                SearchService.search(city).then(function(res) {
+                    result = res.data;
+                });
+
                 $httpBackend.flush();
 
-                //expect(SearchService.search).toHaveBeenCalledWith(city);
+                expect(result.success).toBe(true);
+            });
+
+            it('should return 3 locations', function() {
+                SearchService.search(city).then(function(res) {
+                    result = res.data;
+                });
+                $httpBackend.flush();
+                expect(result.locations.length).toBe(3);
+            });
+
+            it('should return location details', function() {
+                SearchService.search(city).then(function(res) {
+                    result = res.data;
+                });
+                $httpBackend.flush();
+
+                var firstLocation = result.locations[0];
+                expect(firstLocation.name).toBe("Mr Scrib's Pizza");
+                expect(firstLocation.display_phone).toBe("+1-231-733-1857");
+                expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
+                expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
             });
         })
     });
