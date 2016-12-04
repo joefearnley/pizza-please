@@ -1,8 +1,21 @@
 describe('Pizza Please App Test Suite', function() {
-    var searchController;
-    var scope;
-    var SearchService;
-    var geocoder;
+    var fakeResponse = {
+        success: true,
+        error: null,
+        locations: [
+            {
+                name: "Mr Scrib's Pizza",
+                display_phone: "+1-231-733-1857",
+                location: {
+                    display_address: [
+                        "3044 Henry St",
+                        "Muskegon, MI 49441"
+                    ]
+                }
+            },{},{}
+        ]
+    };
+    var city = 'Norton Shores, MI';
 
     describe('App loaded', function() {
         it('should be loaded', function() {
@@ -11,6 +24,11 @@ describe('Pizza Please App Test Suite', function() {
     });
 
     describe('Search Controller', function() {
+        var searchController;
+        var scope;
+        var SearchService;
+        var geocoder;
+
         beforeEach(angular.mock.module('pizzaPlease'));
 
         beforeEach(angular.mock.inject(function(_$controller_, $rootScope, _SearchService_) {
@@ -20,10 +38,6 @@ describe('Pizza Please App Test Suite', function() {
                 $scope: scope,
                 SearchService: SearchService
             });
-
-            var geocodeConstructorSpy = spyOn(google.maps, 'Geocoder');
-            geocoder = jasmine.createSpyObj('Geocoder', ['geocode']);
-            geocodeConstructorSpy.and.returnValue(geocoder);
         }));
 
         it('should exist', function() {
@@ -49,6 +63,12 @@ describe('Pizza Please App Test Suite', function() {
         });
 
         describe('find pizza', function() {
+
+            beforeEach(inject(function(_$httpBackend_, _SearchService_) {
+                $httpBackend = _$httpBackend_;
+                SearchService = _SearchService_;
+            }));
+
             it('should be loading', function() {
                 scope.findPizza();
 
@@ -56,16 +76,15 @@ describe('Pizza Please App Test Suite', function() {
                 expect(scope.resultsLoaded).toBe(false);
             });
 
-            it('should call the geocoder', function() {
+            it('should find locations', function() {
                 scope.findPizza();
 
-                expect(geocoder.geocode).toHaveBeenCalled();
-            });
+                $httpBackend.whenGET('/search?city=' + city)
+                    .respond(200, fakeResponse);
 
-            it('should call the geocoder', function() {
-                scope.findPizza();
+                $httpBackend.flush();
 
-                expect(geocoder.geocode).toHaveBeenCalled();
+                expect(scope.locations).toBeDefined();
             });
         });
     });
@@ -74,23 +93,6 @@ describe('Pizza Please App Test Suite', function() {
         var SearchService;
         var $httpBackend;
         var scope;
-        var city = 'Norton Shores, MI';
-        var fakeResponse = {
-            success: true,
-            error: null,
-            locations: [
-                {
-                    name: "Mr Scrib's Pizza",
-                    display_phone: "+1-231-733-1857",
-                    location: {
-                        display_address: [
-                            "3044 Henry St",
-                            "Muskegon, MI 49441"
-                        ]
-                    }
-                },{},{}
-            ]
-        };
 
         beforeEach(angular.mock.module('pizzaPlease'));
 

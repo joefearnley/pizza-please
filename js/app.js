@@ -6,85 +6,57 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
     $scope.isLoading = false;
     $scope.resultsLoaded = false;
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            $scope.$apply(function () {
-                $scope.position = position;
-                var latlng = {
-                    lat: $scope.position.coords.latitude,
-                    lng: $scope.position.coords.longitude
-                };
-
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({'location': latlng}, function (results, status) {
-                    if (status === google.maps.GeocoderStatus.OK) {
-                        if (results[1]) {
-                            $scope.city = results[1].formatted_address;
-                            $scope.$apply();
-                        }
-                    } else {
-                        $log.log('Geocoder failed due to: ' + status);
-                    }
-                });
-            });
-        });
-    }
-
     $scope.findPizza = function () {
         $scope.isLoading = true;
         $scope.resultsLoaded = false;
 
-        var geocoder = new google.maps.Geocoder();
-
-        geocoder.geocode({address: $scope.city}, function (result, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-                var latitude = result[0].geometry.location.lat();
-                var longitude = result[0].geometry.location.lng();
-                $scope.createMap(latitude, longitude);
-            }
-        });
-    };
-
-    $scope.createMap = function (latitude, longitude) {
-        var mapOptions = {
-            zoom: 12,
-            center: { lat: latitude, lng: longitude },
-            scrollwheel: false
-        };
-
-        $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        $scope.markers = [];
-
         SearchService.search($scope.city)
             .then(function (response) {
-                $scope.locations = response.locations;
-                for (var i = 0; i < $scope.locations.length; i++) {
-                    $scope.createMarker($scope.locations[i]);
-                }
+                $scope.locations = response.data.locations;
 
-                $scope.openInfoWindow = function (e, selectedMarker) {
-                    e.preventDefault();
-                    google.maps.event.trigger(selectedMarker, 'click');
-                };
+                createMap($scope.locations);
 
                 $scope.isLoading = false;
                 $scope.resultsLoaded = true;
-
-                setTimeout(function () {
-                    google.maps.event.trigger($scope.map, 'resize');
-                    $scope.map.setCenter({ lat: latitude, lng: longitude });
-                }, 300);
-            })
-            .catch(function (data, status) {
+            }).catch(function (data, status) {
                 $log.log(status);
                 $log.log(data.error);
             });
     };
 
-    $scope,createMarker = function (location) {
+    var createMap = function (locations) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({address: $scope.city}, function (result, status) {
+            var latitude = result[0].geometry.location.lat();
+            var longitude = result[0].geometry.location.lng();
+            var mapOptions = {
+                zoom: 12,
+                center: { lat: latitude, lng: longitude },
+                scrollwheel: false
+            };
+
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            locations.forEach(function(location) {
+                createMarker(map, location);
+            });
+
+            var openInfoWindow = function (e, selectedMarker) {
+                e.preventDefault();
+                google.maps.event.trigger(selectedMarker, 'click');
+            };
+
+            setTimeout(function () {
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter({ lat: latitude, lng: longitude });
+            }, 300);
+        });
+    };
+
+    var createMarker = function (map, location) {
         var infoWindow = new google.maps.InfoWindow();
         var marker = new google.maps.Marker({
-            map: $scope.map,
+            map: map,
             position: new google.maps.LatLng(
                 location.location.coordinate.latitude,
                 location.location.coordinate.longitude
@@ -97,8 +69,6 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
             infoWindow.setContent('<h5>' + marker.title + '</h5>' + marker.content);
             infoWindow.open($scope.map, marker);
         });
-
-        $scope.markers.push(marker);
     }
 });
 
