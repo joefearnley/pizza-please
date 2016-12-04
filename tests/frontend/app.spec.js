@@ -15,7 +15,6 @@ describe('Pizza Please App Test Suite', function() {
             },{},{}
         ]
     };
-    var city = 'Norton Shores, MI';
 
     describe('App loaded', function() {
         it('should be loaded', function() {
@@ -63,10 +62,12 @@ describe('Pizza Please App Test Suite', function() {
         });
 
         describe('find pizza', function() {
-
             beforeEach(inject(function(_$httpBackend_, _SearchService_) {
                 $httpBackend = _$httpBackend_;
                 SearchService = _SearchService_;
+                scope.city = 'Norton Shores, MI';
+                $httpBackend.whenGET('/search?city=' + scope.city)
+                    .respond(200, fakeResponse);
             }));
 
             it('should be loading', function() {
@@ -79,12 +80,21 @@ describe('Pizza Please App Test Suite', function() {
             it('should find locations', function() {
                 scope.findPizza();
 
-                $httpBackend.whenGET('/search?city=' + city)
-                    .respond(200, fakeResponse);
-
                 $httpBackend.flush();
 
                 expect(scope.locations).toBeDefined();
+            });
+
+            it('should get location details', function() {
+                scope.findPizza();
+
+                $httpBackend.flush();
+
+                var firstLocation = scope.locations[0];
+                expect(firstLocation.name).toBe("Mr Scrib's Pizza");
+                expect(firstLocation.display_phone).toBe("+1-231-733-1857");
+                expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
+                expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
             });
         });
     });
@@ -93,6 +103,7 @@ describe('Pizza Please App Test Suite', function() {
         var SearchService;
         var $httpBackend;
         var scope;
+        var city = 'Norton Shores, MI';
 
         beforeEach(angular.mock.module('pizzaPlease'));
 
