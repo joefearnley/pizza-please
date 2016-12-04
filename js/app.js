@@ -1,14 +1,18 @@
 
-var app = angular.module('pizzaPlease', []);
+var app = angular.module('pizzaPlease', ['angular-ladda']);
 
 app.controller('SearchController', function ($scope, $http, $log, SearchService) {
     $scope.title = 'Pizza Please';
-    $scope.isLoading = false;
-    $scope.resultsLoaded = false;
+    $scope.loading = false;
+    $scope.formInvalid = false;
 
     $scope.findPizza = function () {
-        $scope.isLoading = true;
-        $scope.resultsLoaded = false;
+        $scope.loading = true;
+
+        if ($scope.city.trim() === '') {
+            $scope.formInvalid = true;
+            return false;
+        }
 
         SearchService.search($scope.city)
             .then(function (response) {
@@ -16,8 +20,7 @@ app.controller('SearchController', function ($scope, $http, $log, SearchService)
 
                 createMap($scope.locations);
 
-                $scope.isLoading = false;
-                $scope.resultsLoaded = true;
+                $scope.loading = false;
             }).catch(function (data, status) {
                 $log.log(status);
                 $log.log(data.error);

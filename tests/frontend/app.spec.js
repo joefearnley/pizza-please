@@ -49,11 +49,11 @@ describe('Pizza Please App Test Suite', function() {
             });
 
             it('should not be loading', function() {
-                expect(scope.isLoading).toBe(false);
+                expect(scope.loading).toBe(false);
             });
 
-            it('should have not have results', function() {
-                expect(scope.resultsLoaded).toBe(false);
+            it('should have a valid form', function() {
+                expect(scope.formInvalid).toBe(false);
             });
 
             it('shold have a method named findPizza', function() {
@@ -70,11 +70,17 @@ describe('Pizza Please App Test Suite', function() {
                     .respond(200, fakeResponse);
             }));
 
+            it('should set form to invalid when nothing is entered', function() {
+                scope.city = '';
+                scope.findPizza();
+
+                expect(scope.formInvalid).toBe(true);
+            });
+
             it('should be loading', function() {
                 scope.findPizza();
 
-                expect(scope.isLoading).toBe(true);
-                expect(scope.resultsLoaded).toBe(false);
+                expect(scope.loading).toBe(true);
             });
 
             it('should find locations', function() {

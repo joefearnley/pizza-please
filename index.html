@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pizza Please</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/ladda-themeless.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div ng-controller="SearchController">
     <div class="container form-container">
-        <form class="form-inline form-search">
-            <div class="form-group col-sm-8">
-                <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" details="chosenPlaceDetails" googleplace/>
+        <form class="form-inline form-search" novalidate>
+            <div ng-class="[form-group col-sm-8 {has-error: formInvalid}]">
+                <label ng-show="formInvalid" ng-class="[control-label, {orange: warning}]" for="city">Please Enter a City</label>
+                <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" details="chosenPlaceDetails" googleplace required/>
             </div>
             <div class="form-group col-md-4">
                 <div class="text-center">
-                    <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block">
-                        <i ng-class="{'glyphicon glyphicon-repeat normal-right-spinner': isLoading, 'glyphicon glyphicon-map-marker': !isLoading }"></i>
-                        <span ng-if="!isLoading">Find Pizza</span>
-                        <span ng-if="isLoading">Searching...</span>
+                    <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block" ladda="loading" data-style="expand-left">
+                        Find Pizza
                     </button>
                 </div>
             </div>
@@ -53,6 +53,9 @@
 <script src="js/angular.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/ladda/spin.min.js"></script>
+<script src="js/ladda/ladda.min.js"></script>
+<script src="js/ladda/angular-ladda.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs&libraries=places"></script>
 <script src="js/app.js"></script>
 <script>

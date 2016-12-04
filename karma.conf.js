@@ -7,6 +7,7 @@ module.exports = function(config) {
             'https://maps.googleapis.com/maps/api/js?key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs&libraries=places',
             'node_modules/angular/angular.js',
             'node_modules/angular-mocks/angular-mocks.js',
+            'js/ladda/*.js',
             'js/app.js',
             'tests/frontend/*.js'
         ],
