@@ -1,16 +1,21 @@
 
 var app = angular.module('pizzaPlease', ['angular-ladda']);
 
-app.controller('SearchController', function ($scope, $http, $log, SearchService) {
+app.controller('SearchController', function ($scope, $http, $timeout, $log, SearchService) {
     $scope.title = 'Pizza Please';
     $scope.loading = false;
     $scope.formInvalid = false;
+    $scope.city = '';
 
     $scope.findPizza = function () {
         $scope.loading = true;
 
         if ($scope.city.trim() === '') {
             $scope.formInvalid = true;
+            $timeout(function () {
+                $scope.loading = false;
+            }, 500);
+
             return false;
         }
 
@@ -81,6 +86,14 @@ app.factory('SearchService', function ($http) {
             return $http.get('/search?city=' + city);
         }
     }
+});
+
+app.directive('locationList', function() {
+    return {
+        templateUrl: 'templates/location-list.html',
+        restrict: 'E',
+        replace: 'true'
+    };
 });
 
 /**

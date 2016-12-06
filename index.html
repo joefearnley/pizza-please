@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" ng-app="pizzaPlease">
 <head>
@@ -14,9 +15,9 @@
 <div ng-controller="SearchController">
     <div class="container form-container">
         <form class="form-inline form-search" novalidate>
-            <div ng-class="[form-group col-sm-8 {has-error: formInvalid}]">
-                <label ng-show="formInvalid" ng-class="[control-label, {orange: warning}]" for="city">Please Enter a City</label>
-                <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" details="chosenPlaceDetails" googleplace required/>
+            <div ng-class="[form-group, col-sm-8, {'has-error': formInvalid}]">
+                <label ng-show="formInvalid" class="scontrol-label" for="city">Please Enter a City</label>
+                <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
             </div>
             <div class="form-group col-md-4">
                 <div class="text-center">
@@ -31,23 +32,7 @@
     <div id="map" ng-show="resultsLoaded">
     </div>
 
-    <div class="container results-list" ng-show="resultsLoaded">
-        <div class="row">
-            <div class="col-md-3 large-margin-bottom" ng-repeat="location in locations">
-                <div ng-show="!location.is_closed">
-                    <strong>{{ location.name }}</strong>
-                    <p>
-                        {{ location.location.display_address[0] }}<br>
-                        {{ location.location.display_address[1] }}<br>
-                        Rating: <img ng-src="{{ location.rating_img_url }}" alt="" />
-                    </p>
-                    <p>
-                        <a href="tel:{{ location .display_phone }}" class="btn btn-default"><i class="glyphicon glyphicon-earphone"></i> Call</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <location-list></location-list>
 </div>
 
 <script src="js/angular.min.js"></script>
