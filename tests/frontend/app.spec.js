@@ -105,6 +105,25 @@ describe('Pizza Please App Test Suite', function() {
         });
     });
 
+    describe('Location list directive', function() {
+        describe('initialization', function() {
+            it('should not show after page is initialized', function() {
+            });
+        });
+
+        describe('When loading', function() {
+            it('should not show location list when loading', function() {
+            });
+        });
+        describe('When not loading', function() {
+            it('should show location list when not loading', function() {
+            });
+
+            it('should show 3 locations', function() {
+            });
+        });
+    });
+
     describe('Search Service', function() {
         var SearchService;
         var $httpBackend;

@@ -52,7 +52,6 @@ app.controller('SearchController', function ($scope, $http, $timeout, $log, Sear
             };
 
             $timeout(function () {
-                console.log('triggering resize~~~~~~');
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter({ lat: latitude, lng: longitude });
                 $scope.loading = false;
