@@ -106,20 +106,38 @@ describe('Pizza Please App Test Suite', function() {
     });
 
     describe('Location list directive', function() {
+        var element;
+        var scope;
+        var locations;
+
+        beforeEach(inject(function($rootScope, $compile) {
+            scope = $rootScope.$new();
+            scope.city = 'Norton Shores, MI';
+
+            element = $compile('<location-list></location-list>')(scope);
+            scope.$digest();
+        }));
+
         describe('initialization', function() {
             it('should not show after page is initialized', function() {
+                var locations = element.find('.location');
+                expect(locations.length).toBe(0);
             });
         });
 
         describe('When loading', function() {
             it('should not show location list when loading', function() {
+                var locations = element.find('.location');
+                expect(locations.length).toBe(0);
             });
         });
-        describe('When not loading', function() {
-            it('should show location list when not loading', function() {
-            });
 
-            it('should show 3 locations', function() {
+        describe('When not loading', function() {
+            it('should show location list after searching for pizza', function() {
+                scope.findPizza();
+                var locations = element.find('.location');
+                expect(locations.length).not.toBe(0);
+                expect(items.length).toBe(3);
             });
         });
     });
