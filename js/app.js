@@ -22,10 +22,7 @@ app.controller('SearchController', function ($scope, $http, $timeout, $log, Sear
         SearchService.search($scope.city)
             .then(function (response) {
                 $scope.locations = response.data.locations;
-
                 createMap($scope.locations);
-
-                $scope.loading = false;
             }).catch(function (data, status) {
                 $log.log(status);
                 $log.log(data.error);
@@ -54,9 +51,10 @@ app.controller('SearchController', function ($scope, $http, $timeout, $log, Sear
                 google.maps.event.trigger(selectedMarker, 'click');
             };
 
-            setTimeout(function () {
+            $timeout(function () {
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter({ lat: latitude, lng: longitude });
+                $scope.loading = false;
             }, 300);
         });
     };

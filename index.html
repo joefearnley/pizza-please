@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" ng-app="pizzaPlease">
 <head>
@@ -14,25 +13,36 @@
 
 <div ng-controller="SearchController">
     <div class="container form-container">
-        <form class="form-inline form-search" novalidate>
-            <div ng-class="[form-group, col-sm-8, {'has-error': formInvalid}]">
-                <label ng-show="formInvalid" class="scontrol-label" for="city">Please Enter a City</label>
-                <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
-            </div>
-            <div class="form-group col-md-4">
-                <div class="text-center">
+        <div class="row">
+            <form class="form-inline form-search" novalidate>
+                <!-- <div class="form-group col-md-8" ng-class="[{'has-error': formInvalid}]">
+                    <label ng-show="formInvalid" class="control-label" for="city">Please Enter a City</label>
+                    <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
+                </div>
+                <div class="form-group col-md-4">
                     <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block" ladda="loading" data-style="expand-left">
                         Find Pizza
                     </button>
+                </div> -->
+
+                <div class="input-group col-md-12" ng-class="[{'has-error': formInvalid}]">
+                    <label ng-show="formInvalid" class="control-label" for="city">Please Enter a City</label>
+                    <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
+                    <span class="input-group-btn">
+                        <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block" ladda="loading" data-style="expand-left">
+                            Find Pizza
+                        </button>
+                    </span>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
-    <div id="map" ng-show="resultsLoaded">
-    </div>
+    <div id="map" ng-show="!loading"></div>
 
-    <location-list></location-list>
+    <div ng-show="!loading">
+        <location-list></location-list>
+    </div>
 </div>
 
 <script src="js/angular.min.js"></script>
