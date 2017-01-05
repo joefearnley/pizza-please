@@ -76,7 +76,6 @@ describe('GET /search', function() {
                 expect(firstLocation.display_phone).toBe("+1-231-733-1857");
                 expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
                 expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
-    
                 done();
             });
         });
