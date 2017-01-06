@@ -1,74 +1,84 @@
-
-var request = require('request');
+var baseUrl = 'http://localhost:5000';
 var nock = require('nock');
+var request = require('supertest')(baseUrl);
 
-describe('Search API', function() {
-    var baseUrl = 'http://localhost:5000/';
+describe('GET /search', function() {
+
     var city = 'Norton Shores, MI';
 
-    describe('validate GET /search', function() {
-        it('should return 422 when no city is provided', function() {
-            request.get((baseUrl + '/search?city='), function(error, response, body) {
-                expect(response.statusCode).toBe(500);
+    describe('/search?city=', function() {
+        beforeEach(function() {
+          nock(baseUrl).get('/search?city=').reply(422); 
+        });
+
+        it('should return 422 when no city is provided', function(done) {
+            request.get('/search?city=').end(function (error, response) {
+                expect(response.status).toBe(422);
+                done();
             });
         });
-    });
+     });
 
     describe('GET /seach', function() {
-        var url = baseUrl + '/search?city=' + city;
-        var fakeResponse = {};
+        var searchUrl = '/search?city=' + city;
+        var fakeResponse = {
+            success: true,
+            error: null,
+            locations: [
+                {
+                    name: "Mr Scrib's Pizza",
+                    display_phone: "+1-231-733-1857",
+                    location: {
+                        display_address: [
+                            "3044 Henry St",
+                            "Muskegon, MI 49441"
+                        ]
+                    }
+                },{},{}
+            ]
+        };
 
         beforeEach(function() {
-            fakeResponse = {
-                success: true,
-                error: null,
-                locations: [
-                    {
-                        name: "Mr Scrib's Pizza",
-                        display_phone: "+1-231-733-1857",
-                        location: {
-                            display_address: [
-                                "3044 Henry St",
-                                "Muskegon, MI 49441"
-                            ]
-                        }
-                    },{},{}
-                ]
-            };
-
-            nock(baseUrl)
-                .get('/search?city=' + city)
+            nock(baseUrl).get('/search')
+                .query({
+                    city: city
+                })
                 .reply(200, fakeResponse);
         });
 
-        it('should return status code 200', function() {
-            request.get(url, function(error, response, body) {
-                expect(response.statusCode).toBe(200);
+        it('should return status code 200', function(done) {
+            request.get(searchUrl).end(function (error, response) {
+                expect(response.status).toBe(200);
+                done();
             });
         });
 
-        it('should return a successful response', function() {
-            request.get(url, function(error, response, body) {
-                expect(response.success).toBe(true);
+        it('should return a successful response', function(done) {
+            request.get(searchUrl).end(function (error, response) {
+                expect(response.body.success).toBe(true);
+                done();
             });
         });
 
-        it('should return locations', function() {
-            request.get(url, function(error, response, body) {
-                expect(response.locations).toBeDefined();
-                expect(response.locations.length).toBe(3);
+        it('should return locations', function(done) {
+            request.get(searchUrl).end(function (error, response) {
+                expect(response.body.locations).toBeDefined();
+                expect(response.body.locations.length).toBe(3);
+                done();
             });
         });
 
-        it('should return correct location information', function() {
-            request.get(url, function(error, response, body) {
-                var firstLocation = response.locations[0];
+        it('should return correct location information', function(done) {
+            request.get(searchUrl).end(function (error, response) {
+                var firstLocation = response.body.locations[0];
 
                 expect(firstLocation.name).toBe("Mr Scrib's Pizza");
-                expect(firstLocation.location.display_phone).toBe("+1-231-733-1857");
+                expect(firstLocation.display_phone).toBe("+1-231-733-1857");
                 expect(firstLocation.location.display_address[0]).toBe("3044 Henry St");
                 expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
+                done();
             });
         });
+
     });
 });
