@@ -15,6 +15,8 @@ describe('Pizza Please App Test Suite', function() {
             },{},{}
         ]
     };
+    
+    beforeEach(angular.mock.module('pizzaPlease')); 
 
     describe('App loaded', function() {
         it('should be loaded', function() {
@@ -27,8 +29,7 @@ describe('Pizza Please App Test Suite', function() {
         var scope;
         var SearchService;
         var geocoder;
-
-        beforeEach(angular.mock.module('pizzaPlease'));
+        var $httpBackend;
 
         beforeEach(angular.mock.inject(function(_$controller_, $rootScope, _SearchService_) {
             scope = $rootScope.$new();
@@ -37,6 +38,8 @@ describe('Pizza Please App Test Suite', function() {
                 $scope: scope,
                 SearchService: SearchService
             });
+
+            scope.city = 'Norton Shores, MI';
         }));
 
         it('should exist', function() {
@@ -62,10 +65,9 @@ describe('Pizza Please App Test Suite', function() {
         });
 
         describe('find pizza', function() {
-            beforeEach(inject(function(_$httpBackend_, _SearchService_) {
+            
+            beforeEach(inject(function(_$httpBackend_) {
                 $httpBackend = _$httpBackend_;
-                SearchService = _SearchService_;
-                scope.city = 'Norton Shores, MI';
                 $httpBackend.whenGET('/search?city=' + scope.city)
                     .respond(200, fakeResponse);
             }));
@@ -103,44 +105,58 @@ describe('Pizza Please App Test Suite', function() {
                 expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
             });
         });
+        
+        describe('Location list directive', function() {
+            var element;
+            var locations;
+            
+            beforeEach(inject(function($compile) {
+                element = $compile('<location-list></location-list>')(scope);
+                scope.$digest();
+                
+                locations = element.find('.location');
+            }));
+    
+            describe('Initialization', function() {
+                it('should not show after page is initialized', function() {
+                    expect(locations.length).toBe(0);
+                });
+            });
+    
+            describe('Location Search', function() {
+                it('should show locations list after searching for pizza', function() {
+                    //expect(scope.city).toBe('Norton Shores, MI');
+                    
+                    scope.locations = [{
+                        name: "Mr Scrib's Pizza",
+                        display_phone: "+1-231-733-1857",
+                        location: {
+                            display_address: [
+                                "3044 Henry St",
+                                "Muskegon, MI 49441"
+                            ]
+                        }
+                    },{
+                        name: "Vito's Pizza",
+                        display_phone: "+1-231-555-5555",
+                        location: {
+                            display_address: [
+                                "123 Main St",
+                                "Grand Haven, MI 49441"
+                            ]
+                        }
+                    }];
+
+                    scope.findPizza();
+                    
+                    locations = element.find('.location');
+                    
+                    expect(locations.length).toBe(2);
+                });
+            });
+        });
     });
 
-    describe('Location list directive', function() {
-        var element;
-        var scope;
-        var locations;
-
-        beforeEach(inject(function($rootScope, $compile) {
-            scope = $rootScope.$new();
-            scope.city = 'Norton Shores, MI';
-
-            element = $compile('<location-list></location-list>')(scope);
-            scope.$digest();
-        }));
-
-        describe('initialization', function() {
-            it('should not show after page is initialized', function() {
-                var locations = element.find('.location');
-                expect(locations.length).toBe(0);
-            });
-        });
-
-        describe('When loading', function() {
-            it('should not show location list when loading', function() {
-                var locations = element.find('.location');
-                expect(locations.length).toBe(0);
-            });
-        });
-
-        describe('When not loading', function() {
-            it('should show location list after searching for pizza', function() {
-                scope.findPizza();
-                var locations = element.find('.location');
-                expect(locations.length).not.toBe(0);
-                expect(items.length).toBe(3);
-            });
-        });
-    });
 
     describe('Search Service', function() {
         var SearchService;
@@ -163,7 +179,7 @@ describe('Pizza Please App Test Suite', function() {
             it('should return a promise', function () {
               expect(SearchService.search(city).then).toBeDefined();
             });
-        })
+        });
 
         describe('search', function() {
             var result;
