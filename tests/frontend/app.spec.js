@@ -105,58 +105,7 @@ describe('Pizza Please App Test Suite', function() {
                 expect(firstLocation.location.display_address[1]).toBe("Muskegon, MI 49441");
             });
         });
-        
-        describe('Location list directive', function() {
-            var element;
-            var locations;
-            
-            beforeEach(inject(function($compile) {
-                element = $compile('<location-list></location-list>')(scope);
-                scope.$digest();
-                
-                locations = element.find('.location');
-            }));
-    
-            describe('Initialization', function() {
-                it('should not show after page is initialized', function() {
-                    expect(locations.length).toBe(0);
-                });
-            });
-    
-            describe('Location Search', function() {
-                it('should show locations list after searching for pizza', function() {
-                    //expect(scope.city).toBe('Norton Shores, MI');
-                    
-                    scope.locations = [{
-                        name: "Mr Scrib's Pizza",
-                        display_phone: "+1-231-733-1857",
-                        location: {
-                            display_address: [
-                                "3044 Henry St",
-                                "Muskegon, MI 49441"
-                            ]
-                        }
-                    },{
-                        name: "Vito's Pizza",
-                        display_phone: "+1-231-555-5555",
-                        location: {
-                            display_address: [
-                                "123 Main St",
-                                "Grand Haven, MI 49441"
-                            ]
-                        }
-                    }];
-
-                    scope.findPizza();
-                    
-                    locations = element.find('.location');
-                    
-                    expect(locations.length).toBe(2);
-                });
-            });
-        });
     });
-
 
     describe('Search Service', function() {
         var SearchService;
