@@ -86,14 +86,6 @@ app.factory('SearchService', function ($http) {
     }
 });
 
-app.directive('locationList', function() {
-    return {
-        templateUrl: 'templates/location-list.html',
-        restrict: 'E',
-        replace: 'true'
-    };
-});
-
 /**
  * A fork of https://gist.github.com/kirschbaum/fcac2ff50f707dae75dc
  */

@@ -9,10 +9,16 @@ module.exports = function(config) {
             'node_modules/angular-mocks/angular-mocks.js',
             'js/ladda/*.js',
             'js/app.js',
-            'tests/frontend/*.js'
+            'tests/frontend/*.js',
+            'templates/*.html'
         ],
         exclude: [],
-        preprocessors: {},
+        preprocessors: {
+            'templates/*.html': 'html2js'
+        },
+        ngHtml2JsPreprocessor: {
+            moduleName: 'templates'
+        },
         reporters: ['spec'],
         port: 9876,
         colors: true,
