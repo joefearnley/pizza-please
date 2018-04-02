@@ -19,7 +19,7 @@ describe('GET /search', function() {
         });
      });
 
-    describe('GET /seach', function() {
+    describe('GET /search', function() {
         var searchUrl = '/search?city=' + city;
         var fakeResponse = {
             success: true,
