@@ -1,8 +1,6 @@
 
 const express = require('express');
 const app = express();
-const request = require('request');
-// const Yelp = require('yelp');
 const path = require('path');
 const yelp = require('yelp-fusion');
 
@@ -47,6 +45,8 @@ app.get('/search/:city', (req, res) => {
   });
 });
 
-app.listen(process.env.PORT || 5000, () => {
-    console.log(`Pizza, Please backend listening on port ${process.env.PORT}.`);
+const server = app.listen(process.env.PORT || 5000, () => {
+  console.log(`Pizza, Please backend listening on port ${process.env.PORT}.`);
 });
+
+module.exports = server;

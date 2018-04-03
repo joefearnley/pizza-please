@@ -3,21 +3,20 @@ var nock = require('nock');
 var request = require('supertest')(baseUrl);
 
 describe('GET /search', function() {
+  const city = 'Muskegon, MI';
 
-    var city = 'Norton Shores, MI';
-
-    describe('/search?city=', function() {
-        beforeEach(function() {
-          nock(baseUrl).get('/search?city=').reply(422); 
-        });
-
-        it('should return 422 when no city is provided', function(done) {
-            request.get('/search?city=').end(function (error, response) {
-                expect(response.status).toBe(422);
-                done();
-            });
-        });
-     });
+  describe('/search?city=', function() {
+    beforeEach(function() {
+      nock(baseUrl).get('/search?city=').reply(422); 
+    });
+  
+    it('should return 422 when no city is provided', function(done) {
+      request.get('/search?city=').end(function (error, response) {
+        expect(response.status).toBe(422);
+        done();
+      });
+    });
+  });
 
     describe('GET /search', function() {
         var searchUrl = '/search?city=' + city;
