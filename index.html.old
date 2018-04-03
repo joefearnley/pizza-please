@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pizzaPlease">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pizza Please</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/ladda-themeless.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div ng-controller="SearchController">
+    <div class="container form-container">
+        <div class="row">
+            <form class="form-inline form-search" novalidate>
+                <!-- <div class="form-group col-md-8" ng-class="[{'has-error': formInvalid}]">
+                    <label ng-show="formInvalid" class="control-label" for="city">Please Enter a City</label>
+                    <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
+                </div>
+                <div class="form-group col-md-4">
+                    <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block" ladda="loading" data-style="expand-left">
+                        Find Pizza
+                    </button>
+                </div> -->
+
+                <div class="input-group col-md-12" ng-class="[{'has-error': formInvalid}]">
+                    <label ng-show="formInvalid" class="control-label" for="city">Please Enter a City</label>
+                    <input type="text" name="city" autofocus class="form-control" placeholder="Enter City" ng-model="city" ng-keyup="formInvalid=false" details="chosenPlaceDetails" googleplace required/>
+                    <span class="input-group-btn">
+                        <button ng-click="findPizza()" type="button" class="btn btn-lg btn-success btn-block" ladda="loading" data-style="expand-left">
+                            Find Pizza
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="map" ng-show="!loading"></div>
+
+    <div ng-show="!loading">
+        <div class="container results-list">
+            <div class="row">
+                <div class="col-md-3 large-margin-bottom location" ng-repeat="location in locations">
+                    <div ng-show="!location.is_closed">
+                        <strong>{{ location.name }}</strong>
+                        <p>
+                            {{ location.location.display_address[0] }}<br>
+                            {{ location.location.display_address[1] }}<br>
+                            Rating: <img ng-src="{{ location.rating_img_url }}" alt="" />
+                        </p>
+                        <p>
+                            <a href="tel:{{ location .display_phone }}" class="btn btn-default">
+                                <i class="glyphicon glyphicon-earphone"></i> Call
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="js/angular.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/ladda/spin.min.js"></script>
+<script src="js/ladda/ladda.min.js"></script>
+<script src="js/ladda/angular-ladda.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEbWMdSzk7ctOn9IHfiIbSGmhW98uiQjs&libraries=places"></script>
+<script src="js/app.js"></script>
+<script>
+    $(function() {
+        $('body').css('display', 'none').fadeIn(500);
+    });
+</script>
+</body>
+</html>
