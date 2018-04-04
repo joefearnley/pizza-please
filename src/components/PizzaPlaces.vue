@@ -27,7 +27,7 @@
             </p>
           </div>
           <div v-show="hasError" class="field">
-            <p class="help is-danger">Please enter City</p>
+            <p class="help is-danger">{{ errorMessage }}</p>
           </div>
         </div>
       </div>
@@ -89,8 +89,9 @@ export default {
       city: "",
       isLoading: false,
       hasError: false,
+      errorMessage: '',
       searchUrl: "https://pizza-please.herokuapp.com/search",
-      resultsLoaded: false
+      resultsLoaded: false,
     };
   },
   methods: {
@@ -99,6 +100,7 @@ export default {
       this.resultsLoaded = false;
       if (this.city === "") {
         this.hasError = true;
+        this.errorMessage = 'Please enter City';
         return;
       }
 
@@ -114,7 +116,11 @@ export default {
           this.resultsLoaded = true;
           this.isLoading = false;
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          this.errorMessage = err.message;
+          this.hasError = true;
+          this.isLoading = false;
+        });
     }
   }
 };
