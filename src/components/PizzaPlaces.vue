@@ -9,19 +9,15 @@
         <div class="column is-6">
           <div class="field is-grouped">
             <p class="control is-expanded">
-              <input
-                v-model="city" 
+              <input v-model="city" 
                 class="input" 
                 type="text" 
-                placeholder="Enter City"
-              >
+                placeholder="Enter City">
             </p>
             <p class="control">
-              <a 
-                v-bind:class="{ 'is-loading': isLoading }"
+              <a v-bind:class="{ 'is-loading': isLoading }"
                 @click="search()"
-                class="button is-success"
-              >
+                class="button is-success">
                 Search
               </a>
             </p>
@@ -37,7 +33,10 @@
         <div class="column is-10 has-text-right" v-show="resultsLoaded">
           <h2>Results for <strong>{{ city }}</strong></h2>
         </div>
-        <div class="column is-10"  v-show="resultsLoaded" v-for="location in locations" :key="location.id">
+        <div class="column is-10" 
+          v-show="resultsLoaded" 
+          v-for="location in locations" 
+          :key="location.id">
           <div class="card">
             <div class="card-content">
               <div class="media">
@@ -62,8 +61,7 @@
                   {{ location.location.display_address[1] }}
                 </p>
                 <i class="fas fa-tags"></i>
-                <a 
-                  v-for="category in location.categories" 
+                <a v-for="category in location.categories" 
                   :key="category.id"
                   :href="`https://www.yelp.com/search?find_desc=${category}&find_loc=${city}&ns=1`" 
                   target="_blank">
