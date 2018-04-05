@@ -3,7 +3,10 @@
     <div class="section">
       <h1 class="title has-text-centered">
         Pizza, Please
-        <img src="http://media.tumblr.com/tumblr_l27r5obs2N1qz98xr.png" alt="pizza" height="35" width="35">
+        <img src="http://media.tumblr.com/tumblr_l27r5obs2N1qz98xr.png" 
+          alt="pizza" 
+          height="35" 
+          width="35">
       </h1>
       <div class="columns is-centered">
         <div class="column is-6">
@@ -17,7 +20,7 @@
             <p class="control">
               <a v-bind:class="{ 'is-loading': isLoading }"
                 @click="search()"
-                class="button is-success">
+                class="button is-primary">
                 Search
               </a>
             </p>
@@ -49,23 +52,23 @@
                   <p class="title is-8">{{ location.name }}</p>
                   <p class="subtitle">
                     <img :src="location.rating_img_url_large" height="15" width="100">
+                    <star-rating :rating="location.rating" :read-only="true"></star-rating>
                   </p>
                 </div>
               </div>
-
               <div class="content">
                 <p><em>"{{ location.snippet_text }}"</em></p>
                 <p>
-                  <i class="fas fa-map-marker"></i>
+                  <font-awesome-icon icon="map-marker" />
                   {{ location.location.display_address[0] }}<br>
                   {{ location.location.display_address[1] }}
                 </p>
-                <i class="fas fa-tags"></i>
+                <font-awesome-icon icon="tags" />
                 <a v-for="category in location.categories" 
                   :key="category.id"
                   :href="`https://www.yelp.com/search?find_desc=${category}&find_loc=${city}&ns=1`" 
                   target="_blank">
-                  #{{ category[0] }}
+                  #{{ category.title }}
                 </a>
               </div>
             </div>
@@ -79,17 +82,22 @@
 <script>
 import axios from "axios";
 
+import { StarRating } from "vue-rate-it";
+
 export default {
   name: "PizzaPlaces",
+  components: {
+    StarRating
+  },
   data() {
     return {
       locations: [],
-      city: "",
+      city: "Muskegon,MI",
       isLoading: false,
       hasError: false,
-      errorMessage: '',
-      searchUrl: "https://pizza-please.herokuapp.com/search",
-      resultsLoaded: false,
+      errorMessage: "",
+      searchUrl: "https://pizza-search-uywnphitjm.now.sh/search",
+      resultsLoaded: false
     };
   },
   methods: {
@@ -98,7 +106,7 @@ export default {
       this.resultsLoaded = false;
       if (this.city === "") {
         this.hasError = true;
-        this.errorMessage = 'Please enter City';
+        this.errorMessage = "Please enter City";
         return;
       }
 

@@ -6,14 +6,17 @@
 
 <script>
 import PizzaPlaces from "./components/PizzaPlaces";
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    PizzaPlaces
+    PizzaPlaces,
+    FontAwesomeIcon
   }
-}
+};
 </script>
 
 <style>
+
 </style>
