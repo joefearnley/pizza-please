@@ -7,6 +7,8 @@ import Buefy from "buefy";
 import "buefy/lib/buefy.css";
 require("./assets/sass/main.scss");
 
+Vue.use(Buefy);
+
 Vue.config.productionTip = false;
 
 new Vue({

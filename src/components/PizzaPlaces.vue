@@ -81,13 +81,15 @@
 
 <script>
 import axios from "axios";
-
 import { StarRating } from "vue-rate-it";
+import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
+import faCog from "@fortawesome/fontawesome-free-solid/faCog";
 
 export default {
   name: "PizzaPlaces",
   components: {
-    StarRating
+    StarRating,
+    FontAwesomeIcon
   },
   data() {
     return {
