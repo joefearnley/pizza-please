@@ -52,18 +52,17 @@
                   <p class="title is-8">{{ location.name }}</p>
                   <p class="subtitle">
                     <img :src="location.rating_img_url_large" height="15" width="100">
-                    <star-rating :rating="location.rating" :read-only="true"></star-rating>
                   </p>
                 </div>
               </div>
               <div class="content">
-                <p><em>"{{ location.snippet_text }}"</em></p>
+                <p><star-rating :rating="location.rating" :read-only="true" v-bind:star-size="30"></star-rating></p>
                 <p>
-                  <font-awesome-icon icon="map-marker" />
+                  <i class="fas fa-map-marker-alt"></i>
                   {{ location.location.display_address[0] }}<br>
                   {{ location.location.display_address[1] }}
                 </p>
-                <font-awesome-icon icon="tags" />
+                <i class="fas fa-tags"></i>
                 <a v-for="category in location.categories" 
                   :key="category.id"
                   :href="`https://www.yelp.com/search?find_desc=${category}&find_loc=${city}&ns=1`" 
@@ -82,14 +81,11 @@
 <script>
 import axios from "axios";
 import { StarRating } from "vue-rate-it";
-import FontAwesomeIcon from "@fortawesome/vue-fontawesome";
-import faCog from "@fortawesome/fontawesome-free-solid/faCog";
 
 export default {
   name: "PizzaPlaces",
   components: {
-    StarRating,
-    FontAwesomeIcon
+    StarRating
   },
   data() {
     return {
@@ -148,7 +144,7 @@ export default {
   margin-right: 10px;
 }
 
-.fa-map-marker {
+.fa-map-marker-alt {
   font-size: 35px;
   float: left;
   margin-right: 10px;
