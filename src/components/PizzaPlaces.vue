@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="container">
     <div class="section">
       <h1 class="title has-text-centered">
@@ -12,10 +12,12 @@
         <div class="column is-6">
           <div class="field is-grouped">
             <p class="control is-expanded">
-              <input v-model="city" 
-                class="input" 
-                type="text" 
-                placeholder="Enter City">
+              <places
+                v-model="cityForm.country.label"
+                placeholder="Enter City"
+                @change="val => { cityForm.country.data = val }"
+                :options="{ language: 'en_US', type: 'city', countries: ['US'] }">
+              </places>
             </p>
             <p class="control">
               <a v-bind:class="{ 'is-loading': isLoading }"
@@ -34,7 +36,7 @@
     <div class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-10 has-text-right" v-show="resultsLoaded">
-          <h2>Results for <strong>{{ city }}</strong></h2>
+          <h2>Results for <strong>{{ cityForm.country.data.name }}, {{ cityForm.country.data.administrative }}</strong></h2>
         </div>
         <div class="column is-10" 
           v-show="resultsLoaded" 
@@ -56,7 +58,12 @@
                 </div>
               </div>
               <div class="content">
-                <p><star-rating :rating="location.rating" :read-only="true" v-bind:star-size="30"></star-rating></p>
+                <p>
+                  <star-rating :read-only="true" 
+                    :rating="4.3" 
+                    :increment="0.01">
+                  </star-rating>
+                </p>
                 <p>
                   <i class="fas fa-map-marker-alt"></i>
                   {{ location.location.display_address[0] }}<br>
@@ -81,38 +88,50 @@
 <script>
 import axios from "axios";
 import { StarRating } from "vue-rate-it";
+import Places from "vue-places";
 
 export default {
   name: "PizzaPlaces",
   components: {
-    StarRating
+    StarRating,
+    Places
   },
   data() {
     return {
       locations: [],
-      city: "Muskegon,MI",
       isLoading: false,
       hasError: false,
       errorMessage: "",
       searchUrl: "https://pizza-search-uywnphitjm.now.sh/search",
-      resultsLoaded: false
+      resultsLoaded: false,
+      cityForm: {
+        country: {
+          label: null,
+          data: {}
+        }
+      }
     };
   },
   methods: {
     search: function() {
       this.hasError = false;
       this.resultsLoaded = false;
-      if (this.city === "") {
+      if (this.cityForm === "") {
         this.hasError = true;
         this.errorMessage = "Please enter City";
         return;
       }
 
       this.isLoading = true;
+      const cityName = `
+        ${this.cityForm.country.data.name}, 
+        ${this.cityForm.country.data.administrative}
+      `;
+
       axios
         .get(this.searchUrl, {
           params: {
-            city: this.city
+            city: cityName
           }
         })
         .then(response => {
