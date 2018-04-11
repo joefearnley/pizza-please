@@ -16,7 +16,11 @@
                 v-model="cityForm.country.label"
                 placeholder="Enter City"
                 @change="val => { cityForm.country.data = val }"
-                :options="{ language: 'en_US', type: 'city', countries: ['US'] }">
+                :options="{ 
+                  language: 'en_US', 
+                  type: 'city', 
+                  countries: ['US']
+                }">
               </places>
             </p>
             <p class="control">
@@ -109,19 +113,24 @@ export default {
           label: null,
           data: {}
         }
-      }
+      },
+      loadingComponent: null
     };
   },
   methods: {
     search: function() {
-      this.hasError = false;
-      this.resultsLoaded = false;
-      if (this.cityForm === "") {
+      if (!this.cityForm.country.label) {
         this.hasError = true;
         this.errorMessage = "Please enter City";
         return;
       }
 
+      this.$loading.open({
+        container: null
+      });
+
+      this.hasError = false;
+      this.resultsLoaded = false;
       this.isLoading = true;
       const cityName = `
         ${this.cityForm.country.data.name}, 
@@ -138,6 +147,8 @@ export default {
           this.locations = response.data.locations;
           this.resultsLoaded = true;
           this.isLoading = false;
+
+          this.$loading.close();
         })
         .catch(err => {
           this.errorMessage = err.message;
