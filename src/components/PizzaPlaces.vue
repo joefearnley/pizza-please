@@ -19,7 +19,12 @@
                 :options="{ 
                   language: 'en_US', 
                   type: 'city', 
-                  countries: ['US']
+                  countries: ['US'],
+                  templates: {
+                    value: function(suggestion) {
+                      return `${suggestion.name}, ${abbriviateState(suggestion.administrative)}`;
+                    }
+                  }
                 }">
               </places>
             </p>
@@ -40,7 +45,13 @@
     <div class="section">
       <div class="columns is-multiline is-centered">
         <div class="column is-10 has-text-right" v-show="resultsLoaded">
-          <h2>Results for <strong>{{ cityForm.country.data.name }}, {{ cityForm.country.data.administrative }}</strong></h2>
+          <h2>
+            Results for 
+            <strong>
+              {{ cityForm.country.data.name }}, 
+              {{ abbriviateState(cityForm.country.data.administrative) }}
+            </strong>
+          </h2>
         </div>
         <div class="column is-10" 
           v-show="resultsLoaded" 
@@ -64,8 +75,7 @@
               <div class="content">
                 <p>
                   <star-rating :read-only="true" 
-                    :rating="4.3" 
-                    :increment="0.01">
+                    :rating="location.rating">
                   </star-rating>
                 </p>
                 <p>
@@ -113,19 +123,19 @@ export default {
           label: null,
           data: {}
         }
-      },
-      loadingComponent: null
+      }
     };
   },
   methods: {
     search: function() {
       if (!this.cityForm.country.label) {
         this.hasError = true;
+        this.resultsLoaded = false;
         this.errorMessage = "Please enter City";
         return;
       }
 
-      this.$loading.open({
+      const loadingComponent = this.$loading.open({
         container: null
       });
 
@@ -148,13 +158,76 @@ export default {
           this.resultsLoaded = true;
           this.isLoading = false;
 
-          this.$loading.close();
+          loadingComponent.close();
         })
         .catch(err => {
           this.errorMessage = err.message;
           this.hasError = true;
           this.isLoading = false;
         });
+    },
+    abbriviateState: function(state) {
+      return {
+        Alabama: "AL",
+        Alaska: "AK",
+        "American Samoa": "AS",
+        Arizona: "AZ",
+        Arkansas: "AR",
+        California: "CA",
+        Colorado: "CO",
+        Connecticut: "CT",
+        Delaware: "DE",
+        "District Of Columbia": "DC",
+        "Federated States Of Micronesia": "FM",
+        Florida: "FL",
+        Georgia: "GA",
+        Guam: "GU",
+        Hawaii: "HI",
+        Idaho: "ID",
+        Illinois: "IL",
+        Indiana: "IN",
+        Iowa: "IA",
+        Kansas: "KS",
+        Kentucky: "KY",
+        Louisiana: "LA",
+        Maine: "ME",
+        "Marshall Islands": "MH",
+        Maryland: "MD",
+        Massachusetts: "MA",
+        Michigan: "MI",
+        Minnesota: "MN",
+        Mississippi: "MS",
+        Missouri: "MO",
+        Montana: "MT",
+        Nebraska: "NE",
+        Nevada: "NV",
+        "New Hampshire": "NH",
+        "New Jersey": "NJ",
+        "New Mexico": "NM",
+        "New York": "NY",
+        "North Carolina": "NC",
+        "North Dakota": "ND",
+        "Northern Mariana Islands": "MP",
+        Ohio: "OH",
+        Oklahoma: "OK",
+        Oregon: "OR",
+        Palau: "PW",
+        Pennsylvania: "PA",
+        "Puerto Rico": "PR",
+        "Rhode Island": "RI",
+        "South Carolina": "SC",
+        "South Dakota": "SD",
+        Tennessee: "TN",
+        Texas: "TX",
+        Utah: "UT",
+        Vermont: "VT",
+        "Virgin Islands": "VI",
+        Virginia: "VA",
+        Washington: "WA",
+        "West Virginia": "WV",
+        Wisconsin: "WI",
+        Wyoming: "WY"
+      }[state];
     }
   }
 };
