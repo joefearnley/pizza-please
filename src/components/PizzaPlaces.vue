@@ -74,9 +74,7 @@
               </div>
               <div class="content">
                 <p>
-                  <star-rating :read-only="true" 
-                    :rating="location.rating">
-                  </star-rating>
+                  <star-rating :read-only="true" :rating="location.rating"></star-rating>
                 </p>
                 <p>
                   <i class="fas fa-map-marker-alt"></i>
@@ -86,7 +84,7 @@
                 <i class="fas fa-tags"></i>
                 <a v-for="category in location.categories" 
                   :key="category.id"
-                  :href="`https://www.yelp.com/search?find_desc=${category}&find_loc=${city}&ns=1`" 
+                  :href="`https://www.yelp.com/search?find_desc=${category.title}&find_loc=${cityForm.country.label}&ns=1`" 
                   target="_blank">
                   #{{ category.title }}
                 </a>
@@ -109,6 +107,11 @@ export default {
   components: {
     StarRating,
     Places
+  },
+  mounted: function () {
+    document
+      .querySelector(".ap-icon-clear")
+      .addEventListener("click", e => this.resultsLoaded = false);
   },
   data() {
     return {
@@ -141,11 +144,9 @@ export default {
 
       this.hasError = false;
       this.resultsLoaded = false;
+
       this.isLoading = true;
-      const cityName = `
-        ${this.cityForm.country.data.name}, 
-        ${this.cityForm.country.data.administrative}
-      `;
+      const cityName = `${this.cityForm.country.data.name},${this.cityForm.country.data.administrative}`;
 
       axios
         .get(this.searchUrl, {
@@ -168,39 +169,39 @@ export default {
     },
     abbriviateState: function(state) {
       return {
-        Alabama: "AL",
-        Alaska: "AK",
+        "Alabama": "AL",
+        "Alaska": "AK",
         "American Samoa": "AS",
-        Arizona: "AZ",
-        Arkansas: "AR",
-        California: "CA",
-        Colorado: "CO",
-        Connecticut: "CT",
-        Delaware: "DE",
+        "Arizona": "AZ",
+        "Arkansas": "AR",
+        "California": "CA",
+        "Colorado": "CO",
+        "Connecticut": "CT",
+        "Delaware": "DE",
         "District Of Columbia": "DC",
         "Federated States Of Micronesia": "FM",
-        Florida: "FL",
-        Georgia: "GA",
-        Guam: "GU",
-        Hawaii: "HI",
-        Idaho: "ID",
-        Illinois: "IL",
-        Indiana: "IN",
-        Iowa: "IA",
-        Kansas: "KS",
-        Kentucky: "KY",
-        Louisiana: "LA",
-        Maine: "ME",
+        "Florida": "FL",
+        "Georgia": "GA",
+        "Guam": "GU",
+        "Hawaii": "HI",
+        "Idaho": "ID",
+        "Illinois": "IL",
+        "Indiana": "IN",
+        "Iowa": "IA",
+        "Kansas": "KS",
+        "Kentucky": "KY",
+        "Louisiana": "LA",
+        "Maine": "ME",
         "Marshall Islands": "MH",
-        Maryland: "MD",
-        Massachusetts: "MA",
-        Michigan: "MI",
-        Minnesota: "MN",
-        Mississippi: "MS",
-        Missouri: "MO",
-        Montana: "MT",
-        Nebraska: "NE",
-        Nevada: "NV",
+        "Maryland": "MD",
+        "Massachusetts": "MA",
+        "Michigan": "MI",
+        "Minnesota": "MN",
+        "Mississippi": "MS",
+        "Missouri": "MO",
+        "Montana": "MT",
+        "Nebraska": "NE",
+        "Nevada": "NV",
         "New Hampshire": "NH",
         "New Jersey": "NJ",
         "New Mexico": "NM",
@@ -208,25 +209,25 @@ export default {
         "North Carolina": "NC",
         "North Dakota": "ND",
         "Northern Mariana Islands": "MP",
-        Ohio: "OH",
-        Oklahoma: "OK",
-        Oregon: "OR",
-        Palau: "PW",
-        Pennsylvania: "PA",
+        "Ohio": "OH",
+        "Oklahoma": "OK",
+        "Oregon": "OR",
+        "Palau": "PW",
+        "Pennsylvania": "PA",
         "Puerto Rico": "PR",
         "Rhode Island": "RI",
         "South Carolina": "SC",
         "South Dakota": "SD",
-        Tennessee: "TN",
-        Texas: "TX",
-        Utah: "UT",
-        Vermont: "VT",
+        "Tennessee": "TN",
+        "Texas": "TX",
+        "Utah": "UT",
+        "Vermont": "VT",
         "Virgin Islands": "VI",
-        Virginia: "VA",
-        Washington: "WA",
+        "Virginia": "VA",
+        "Washington": "WA",
         "West Virginia": "WV",
-        Wisconsin: "WI",
-        Wyoming: "WY"
+        "Wisconsin": "WI",
+        "Wyoming": "WY"
       }[state];
     }
   }
