@@ -21,9 +21,7 @@
                   type: 'city', 
                   countries: ['US'],
                   templates: {
-                    value: function(suggestion) {
-                      return `${suggestion.name}, ${abbriviateState(suggestion.administrative)}`;
-                    }
+                    value: suggestion => `${suggestion.name}, ${abbriviateState(suggestion.administrative)}` 
                   }
                 }">
               </places>
