@@ -64,35 +64,38 @@
                   </figure>
                 </div>
                 <div class="media-content">
-                  <div class="columns">
-                    <div class="column">
-                      <p class="title is-8">{{ location.name }}</p>
-                      <p class="subtitle">
-                        <img :src="location.rating_img_url_large" height="15" width="100">
-                      </p>
-                    </div>
-                    <div class="column">
-                      <p><star-rating :star-size="20" :read-only="true" :rating="location.rating"></star-rating></p>
-                    </div>
-                  </div>
+                  <p class="title is-8">{{ location.name }}</p>
+                  <p class="subtitle">
+                    <img :src="location.rating_img_url_large" height="15" width="100">
+                  </p>
                 </div>
               </div>
               <div class="content">
-                <p>
-                  <i class="fas fa-map-marker-alt"></i>
-                  {{ location.location.display_address[0] }}<br>
-                  {{ location.location.display_address[1] }}<br>
-                  <a :href="`tel:${location.phone}`">{{ location.display_phone }}</a>
-                </p>
-                <p>
-                  <i class="fas fa-tags"></i>
-                  <a v-for="category in location.categories" 
-                    :key="category.id"
-                    :href="`https://www.yelp.com/search?find_desc=${category.title}&find_loc=${cityForm.country.label}&ns=1`" 
-                    target="_blank">
-                    #{{ category.title }}
-                  </a>
-                </p>
+                <div class="columns">
+                  <div class="column">
+                    <p>
+                      <font-awesome-icon icon="map-marker-alt" />
+                      {{ location.location.display_address[0] }}<br>
+                      {{ location.location.display_address[1] }}<br>
+                    </p>
+                    <p>
+                      <font-awesome-icon icon="phone" />
+                      <a :href="`tel:${location.phone}`">{{ location.display_phone }}</a>
+                    </p>
+                    <p>
+                      <font-awesome-icon icon="tags" />
+                      <a v-for="category in location.categories" 
+                        :key="category.id"
+                        :href="`https://www.yelp.com/search?find_desc=${category.title}&find_loc=${cityForm.country.label}&ns=1`" 
+                        target="_blank">
+                        #{{ category.title }}
+                      </a>
+                    </p>
+                  </div>
+                  <div class="column">
+                    <p><star-rating :star-size="20" :read-only="true" :rating="location.rating"></star-rating></p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
