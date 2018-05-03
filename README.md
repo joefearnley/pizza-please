@@ -1,8 +1,10 @@
 # pizza-please
 
-> \"Pizza, Please\"
+Find pizza based a chosen city.
 
-## Build Setup
+This application utlizes [Vue.js](https://vuejs.org/) and the [vue-cli](https://github.com/vuejs/vue-cli) project. It then uses the [pizza-search](https://github.com/joefearnley/pizza-search) for accesing the [Yelp API](https://www.yelp.com/fusion). 
+
+## vue-cli Instructions
 
 ``` bash
 # install dependencies
@@ -20,11 +22,6 @@ npm run build --report
 # run unit tests
 npm run unit
 
-# run e2e tests
-npm run e2e
-
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
