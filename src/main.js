@@ -8,7 +8,7 @@ import fontawesome from '@fortawesome/fontawesome';
 import faFreeSolid from '@fortawesome/fontawesome-free-solid';
 
 fontawesome.library.add(faFreeSolid);
-import "buefy/lib/buefy.css";
+
 require("./assets/sass/main.scss");
 
 Vue.use(Buefy);
