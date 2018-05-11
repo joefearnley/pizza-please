@@ -2,7 +2,7 @@
 
 Find pizza based a chosen city.
 
-This application utlizes [Vue.js](https://vuejs.org/) and the [vue-cli](https://github.com/vuejs/vue-cli) project. It then uses the [pizza-search](https://github.com/joefearnley/pizza-search) for accesing the [Yelp API](https://www.yelp.com/fusion). It also uses the [Bulma CSS framework](bulma.io) for the UI.
+This application utlizes [Vue.js](https://vuejs.org/) and the [vue-cli](https://github.com/vuejs/vue-cli) project. It then uses the [pizza-search](https://github.com/joefearnley/pizza-search) for accesing the [Yelp API](https://www.yelp.com/fusion). It also uses the [Bulma CSS framework](https://bulma.io) for the UI.
 
 Check it out in action here: [https://pizza-please.herokuapp.com/](https://pizza-please.herokuapp.com/)
 
