@@ -4,7 +4,7 @@ Find pizza based a chosen city.
 
 This application utlizes [Vue.js](https://vuejs.org/) and the [vue-cli](https://github.com/vuejs/vue-cli) project. It then uses the [pizza-search](https://github.com/joefearnley/pizza-search) for accesing the [Yelp API](https://www.yelp.com/fusion). 
 
-## vue-cli Instructions
+## vue-cli Installation Instructions
 
 ``` bash
 # install dependencies
